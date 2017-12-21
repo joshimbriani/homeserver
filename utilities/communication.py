@@ -1,2 +1,2 @@
 # Communication.py allows modules to communicate
-# sendEmail and sendText
+# sendEmail, sendText, call

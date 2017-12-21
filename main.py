@@ -43,7 +43,7 @@ def cli(verbose, list, modules, frequency, params):
                 click.echo("Will not add to existing jobs. Please delete them.")
                 return  
 
-        jobCommand = "python3 " + os.path.join(os.path.dirname(os.path.realpath(__file__)),'runner.py') + " " + ",".join(modules) + " \"" + params + "\""
+        jobCommand = "python3 " + os.path.join(os.path.dirname(os.path.realpath(__file__)),'runner.py') + " " + ",".join(modules) + " \"" + (params or "") + "\""
         #job = cron.new(command=jobCommand)
         os.system(jobCommand)
         click.echo("Created a job doing {} every {} minutes.".format(", ".join(modules), frequency))

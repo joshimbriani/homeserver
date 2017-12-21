@@ -15,7 +15,10 @@ def runner():
 
     for module in modules:
         importModule = importlib.import_module("modules." + module)
-        importModule.run()
+        arg = {}
+        if module in argDict:
+            arg = argDict[module]
+        importModule.run(arg)
 
     for oneoff in os.listdir('one'):
         if oneoff[-3:] == ".py":
