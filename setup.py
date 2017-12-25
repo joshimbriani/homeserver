@@ -6,7 +6,9 @@ setup(
     py_modules=["main"],
     install_requires=[
         "Click",
-        "python-crontab"
+        "python-crontab",
+        "twilio",
+        "sendgrid"
     ],
     entry_points='''
         [console_scripts]

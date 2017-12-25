@@ -44,7 +44,15 @@ def writeToDB(data, module, table, dataFormat="json", createStatment=None):
     # INSERT INTO table DATA ('', '')
 
     # if json
-    if dataFormat == "json":
-        # Convert json string to obj
-        jsonObj = json.loads(data)
-        # Need to figure 
+    if dataFormat != "csv":
+        if dataFormat == "json"
+            # Convert json string to obj
+            data = json.loads(data)
+        
+        # Save the schema to a text file when we create. Then have a function that takes an object and returns the proper
+        # insert string with correct nulls if the obj doesn't have a schema field on it. 
+        getInsertStringFromObject(data)
+
+def getInsertStringFromObject(obj):
+    
+    return ""

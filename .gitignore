@@ -191,4 +191,6 @@ $RECYCLE.BIN/
 
 data/
 
+settings/
+
 # End of https://www.gitignore.io/api/linux,macos,python,windows,virtualenv,visualstudiocode
