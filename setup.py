@@ -8,7 +8,8 @@ setup(
         "Click",
         "python-crontab",
         "twilio",
-        "sendgrid"
+        "sendgrid",
+        "ebaysdk"
     ],
     entry_points='''
         [console_scripts]
