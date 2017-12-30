@@ -20,7 +20,7 @@ def runner():
             arg = argDict[module]
         importModule.run(arg)
 
-    for oneoff in os.listdir('one'):
+    for oneoff in os.listdir(os.path.join(os.path.dirname(os.path.realpath(__file__)),'one')):
         if oneoff[-3:] == ".py":
             if oneoff[:-3] != "__init__":
                 importModule = importlib.import_module("one." + oneoff[:-3])

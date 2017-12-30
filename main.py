@@ -12,11 +12,12 @@ from utilities.misc import formatCron
 @click.command()
 @click.option('--verbose', is_flag=True, help="Will print verbose messages.")
 @click.option('--list', is_flag=True, help="Lists all current jobs. Will quit when listing is complete.")
+@click.option('--kill', '-k', is_flag=True, help="Kills all current homeserver jobs.")
 @click.option('--modules', '-m', type=click.STRING, multiple=True, default='', help='Modules to start cron with. Input as a comma delimited list.')
 @click.option('--frequency', '-f', type=click.INT, help='Frequency to run the cron job (in minutes).')
 @click.option('--params', '-p', type=click.STRING, help='Params for modules.')
-def cli(verbose, list, modules, frequency, params):
-    cron = CronTab()
+def cli(verbose, list, kill, modules, frequency, params):
+    cron = CronTab(user='josh')
     if list:
         # Get the cron jobs that start with homeserver*
         jobs = getHSJobs()
@@ -26,6 +27,9 @@ def cli(verbose, list, modules, frequency, params):
         else:
             for job in jobs:
                 click.echo(formatCron(job))
+        return
+    if kill:
+        killHSJobs()
         return
     if modules:
         if not frequency:
@@ -38,22 +42,30 @@ def cli(verbose, list, modules, frequency, params):
             kill = click.prompt("Kill the existing job? (Y/N)", type=str, default="N")
             if kill.upper() == "Y" or kill.upper() == "YES":
               for job in jobs:
-                  job.enable(False)
+                  cron.remove(job)
             else:
                 click.echo("Will not add to existing jobs. Please delete them.")
                 return  
 
-        jobCommand = "python3 " + os.path.join(os.path.dirname(os.path.realpath(__file__)),'runner.py') + " " + ",".join(modules) + " \"" + (params or "") + "\""
-        #job = cron.new(command=jobCommand)
-        os.system(jobCommand)
+        jobCommand = os.path.join(os.path.dirname(os.path.realpath(__file__)),"env", "bin", "python") + " " + os.path.join(os.path.dirname(os.path.realpath(__file__)),'runner.py') + " " + ",".join(modules) + " \"" + (params or "") + "\""
+        job = cron.new(command=jobCommand)
+        job.minute.every(frequency)
+        cron.write()
         click.echo("Created a job doing {} every {} minutes.".format(", ".join(modules), frequency))
         return
 
 def getHSJobs():
-    cron = CronTab()
-    jobiterator = cron.find_command(re.compile(r'homeserver-\S+'))
+    cron = CronTab(user='josh')
+    jobiterator = cron.find_command(re.compile(r'homeserver'))
     jobs = []
     for job in jobiterator:
         jobs.append(job)
 
     return jobs
+
+def killHSJobs():
+    cron = CronTab(user='josh')
+    jobiterator = cron.find_command(re.compile(r'homeserver'))
+    for job in jobiterator:
+        cron.remove(job)
+    cron.write()

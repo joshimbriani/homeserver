@@ -9,7 +9,8 @@ setup(
         "python-crontab",
         "twilio",
         "sendgrid",
-        "ebaysdk"
+        "ebaysdk",
+        "selenium"
     ],
     entry_points='''
         [console_scripts]
