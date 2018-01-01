@@ -29,7 +29,7 @@ class Communication:
                 return
             from_email = Email("joshimbriani@gmail.com")
             to_email = Email("joshimbriani@gmail.com")
-            content = Content("text/plain", contents)
+            content = Content("text/html", contents)
             mail = Mail(from_email, subject, to_email, content)
             response = self.sgClient.client.mail.send.post(request_body=mail.get())
 
@@ -67,8 +67,8 @@ class Communication:
         return getattr(self.instance, name)
     def __setattr__(self, name):
         return setattr(self.instance, name)
-    def sendEmail(self, contents):
-        self.instance.sendEmail(contents)
+    def sendEmail(self, subject, contents):
+        self.instance.sendEmail(subject, contents)
     def sendText(self, contents):
         self.instance.sendText(contents)
     def call(self, contents):

@@ -43,20 +43,21 @@ def run(argDict):
                     binPrice = float(item['listingInfo']
                                      ['buyItNowPrice']['value'])
                 if itemDeservesNotification(0.85, price, search['price'], listingType, endTime, 60, name, binPrice):
-                    
+
                     emailerdata = getFileData("emailer", fileType="json")
-                    print(emailerdata)
                     if "ebayWatcher" in emailerdata:
                         inFile = False
                         for notification in emailerdata["ebayWatcher"]:
                             if notification["itemID"] == itemID:
                                 inFile = True
                         if not inFile:
-                            emailerdata["ebayWatcher"].append({"name": name, "price": price, "listingType": listingType, "itemID": itemID})
+                            emailerdata["ebayWatcher"].append(
+                                {"name": name, "price": price, "listingType": listingType, "itemID": itemID, "thumbnailURL": item["galleryURL"], "timeLeft": (endTime - datetime.now()).seconds / 60, "percent": round(price / search['price'], 2) * 100, "url": item["viewItemURL"]})
                     else:
-                        emailerdata["ebayWatcher"] = [{"name": name, "price": price, "listingType": listingType, "itemID": itemID}]
+                        emailerdata["ebayWatcher"] = [
+                            {"name": name, "price": price, "listingType": listingType, "itemID": itemID, "thumbnailURL": item["galleryURL"], "timeLeft": (endTime - datetime.now()).seconds / 60, "percent": round(price / search['price'], 2) * 100, "url": item["viewItemURL"]}]
                     writeToFile(emailerdata, "emailer", fileType="json")
-                    
+
                     if endingWithinThreshold(endTime, 15) and listingType == "Auction":
                         commCreds = getCredentials("system")
                         comm = Communication(
@@ -83,6 +84,17 @@ def run(argDict):
     except ConnectionError as e:
         print(e)
         print(e.response.dict())
+
+
+def emailTemplate(item):
+    template = """
+        <div>
+            <h3>{}</h3>
+            <img src="{}" alt="{}" />
+            <p>This is a {} listing which will end in {} minutes. It is going for ${}, which is {}% under the market price for the item. The listing can be found <a href="{}">here</a></p>
+        </div>
+    """.format(item["name"], item["thumbnailURL"], item["name"], item["listingType"], item["timeLeft"], item["price"], item["percent"], item["url"])
+    return template
 
 
 def getMarketPriceForCard(name):
