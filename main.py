@@ -14,7 +14,7 @@ from utilities.misc import formatCron
 @click.option('--list', is_flag=True, help="Lists all current jobs. Will quit when listing is complete.")
 @click.option('--kill', '-k', is_flag=True, help="Kills all current homeserver jobs.")
 @click.option('--modules', '-m', type=click.STRING, multiple=True, default='', help='Modules to start cron with. Input as a comma delimited list.')
-@click.option('--frequency', '-f', type=click.INT, help='Frequency to run the cron job (in minutes).')
+@click.option('--frequency', '-f', type=click.STRING, help='Frequency to run the cron job (in minutes).')
 @click.option('--params', '-p', type=click.STRING, help='Params for modules.')
 def cli(verbose, list, kill, modules, frequency, params):
     cron = CronTab(user='josh')
@@ -45,12 +45,21 @@ def cli(verbose, list, kill, modules, frequency, params):
                   cron.remove(job)
             else:
                 click.echo("Will not add to existing jobs. Please delete them.")
-                return  
+                return
 
-        jobCommand = os.path.join(os.path.dirname(os.path.realpath(__file__)),"env", "bin", "python") + " " + os.path.join(os.path.dirname(os.path.realpath(__file__)),'runner.py') + " " + ",".join(modules) + " \"" + (params or "") + "\""
-        job = cron.new(command=jobCommand)
-        job.minute.every(frequency)
-        cron.write()
+        scheduledDict = scheduleJobs(frequency)
+        for frequencyKey, moduleList in scheduledDict.items():
+            if moduleList == "all":
+                jobCommand = os.path.join(os.path.dirname(os.path.realpath(__file__)),"env", "bin", "python") + " " + os.path.join(os.path.dirname(os.path.realpath(__file__)),'runner.py') + " " + ",".join(modules) + " \"" + (params or "") + "\""
+                job = cron.new(command=jobCommand)
+                job.minute.every(frequencyKey)
+                cron.write()
+            else:
+                jobCommand = os.path.join(os.path.dirname(os.path.realpath(__file__)),"env", "bin", "python") + " " + os.path.join(os.path.dirname(os.path.realpath(__file__)),'runner.py') + " " + ",".join(moduleList) + " \"" + (params or "") + "\""
+                job = cron.new(command=jobCommand)
+                job.minute.every(frequencyKey)
+                cron.write()
+
         click.echo("Created a job doing {} every {} minutes.".format(", ".join(modules), frequency))
         return
 
@@ -69,3 +78,19 @@ def killHSJobs():
     for job in jobiterator:
         cron.remove(job)
     cron.write()
+
+def scheduleJobs(frequencyString):
+    scheduleDict = {}
+    splitByJobGroup = frequencyString.split(";")
+    for jobGroup in splitByJobGroup:
+        moduleFreqPair = jobGroup.split(":")
+        frequency = int(moduleFreqPair[1])
+        modules = moduleFreqPair[0].split(",")
+        for module in modules:
+            if module == "all":
+                return {frequency: "all"}
+            if frequency not in scheduleDict:
+                scheduleDict[frequency] = [module]
+            else:
+                scheduleDict[frequency].append(module)
+    return scheduleDict

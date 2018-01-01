@@ -22,13 +22,24 @@ def writeToFile(data, module, fileType="txt"):
         with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", module + ".json"), "r+") as f:
             fileContents = f.read()
         with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", module + ".json"), "w") as f:
-            result = []
-            if fileContents:
-                result = json.loads(fileContents)
-            result += data
-            f.write(json.dumps(result))
+            #result = []
+            #if fileContents:
+            #    result = json.loads(fileContents)
+            #result += data
+            f.write(json.dumps(data))
 
     return
+
+def getFileData(module, fileType="json"):
+    if fileType != "txt" and fileType != "json" and fileType != "csv":
+        click.echo("Unsupported file type. HomeServer supports \"txt\", \"json\" and \"csv\"")
+    if fileType == "json":
+        open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", module + ".json"), "a+")
+        with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", module + ".json"), "r+") as f:
+            contents = f.read()
+            if contents == "":
+                contents = "{}"
+            return json.loads(contents)
 
 def writeToDB(data, module, table, dataFormat="json", createStatment=None):
     if dataFormat != "json" and dataFormat != "csv" and dataFormat != "obj":
@@ -45,7 +56,7 @@ def writeToDB(data, module, table, dataFormat="json", createStatment=None):
 
     # if json
     if dataFormat != "csv":
-        if dataFormat == "json"
+        if dataFormat == "json":
             # Convert json string to obj
             data = json.loads(data)
         
