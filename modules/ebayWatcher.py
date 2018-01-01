@@ -31,9 +31,14 @@ def run(argDict):
             for item in response.dict()['searchResult']['item']:
                 price = float(item['sellingStatus']
                               ['convertedCurrentPrice']['value'])
+                listingType = item['listingInfo']['listingType']
                 endTime = datetime.strptime(
                     item['listingInfo']['endTime'], '%Y-%m-%dT%H:%M:%S.000Z')
-                if price < search['price'] * 1.0 and (endTime - datetime.now()).seconds < 60 * 60 * 1 and not re.search("(World Champion|China|Chinese|Japan|Coin|Jumbo|playmat|oversize|pin|code|ptcgo)", item['title'], re.IGNORECASE):
+                name = item['title']
+                binPrice = None
+                if "buyItNowPrice" in item['listingInfo']:
+                    binPrice = float(item['listingInfo']['buyItNowPrice']['value'])
+                if itemDeservesNotification(0.9, price, search['price'], listingType, endTime, 1, name, binPrice):
                     click.echo("The item {} is selling for ${} with {} minutes left. This is {}% of the market value. The URL is {}.".format(
                         item['title'], float(item['sellingStatus']['convertedCurrentPrice']['value']), (
                             endTime - datetime.now()).seconds / 60,
@@ -58,3 +63,21 @@ def getMarketPriceForCard(name):
         return 0.0
     else:
         return float(price[1:])
+
+def priceIsBelowMarket(threshold, itemPrice, marketPrice):
+    return itemPrice < marketPrice * threshold
+
+def itemIsAuctionEndingSoonOrBIN(listingType, endTime, timeThreshold):
+    isAuction = listingType == "Auction"
+    isEndingSoon = (endTime - datetime.now()).seconds < 60 * 60 * timeThreshold
+    isBIN = (listingType == "FixedPrice" or listingType == "StoreInventory")
+    return isAuction and isEndingSoon or isBIN
+
+def itemIsNotExcluded(name):
+    return not re.search("(" + "|".join(getCredentials("ebayWatcher")["termsToExclude"]) + ")", name, re.IGNORECASE) 
+
+def itemDeservesNotification(threshold, itemPrice, marketPrice, listingType, endTime, timeThreshold, name, binPrice=None):
+    if listingType == "AuctionWithBIN" and binPrice and binPrice < marketPrice * threshold:
+        return True
+    else:
+        return priceIsBelowMarket(threshold, itemPrice, marketPrice) and itemIsAuctionEndingSoonOrBIN(listingType, endTime, timeThreshold) and itemIsNotExcluded(name)
