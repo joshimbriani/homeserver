@@ -62,18 +62,18 @@ def run(argDict):
                         commCreds = getCredentials("system")
                         comm = Communication(
                             commCreds["twilioSID"], commCreds["twilioAuth"], commCreds["sendGridToken"])
-                        comm.sendText("The item {} is selling for ${} with {} minutes left. This is {}% of the market value. The URL is {}".format(
-                            item['title'], price, (
-                                endTime - datetime.now()).seconds / 60,
-                            round(price / search['price'], 2) * 100, item['viewItemURL']))
+                        #comm.sendText("The item {} is selling for ${} with {} minutes left. This is {}% of the market value. The URL is {}".format(
+                        #    item['title'], price, (
+                        #        endTime - datetime.now()).seconds / 60,
+                        #    round(price / search['price'], 2) * 100, item['viewItemURL']))
                     if listingType == "FixedPrice" or listingType == "StoreInventory" and priceIsBelowMarket(0.6, price, search["price"]):
                         commCreds = getCredentials("system")
                         comm = Communication(
                             commCreds["twilioSID"], commCreds["twilioAuth"], commCreds["sendGridToken"])
-                        comm.sendText("The item {} is selling for ${} with {} minutes left. This is {}% of the market value. The URL is {}".format(
-                            item['title'], price, (
-                                endTime - datetime.now()).seconds / 60,
-                            round(price / search['price'], 2) * 100, item['viewItemURL']))
+                        #comm.sendText("The item {} is selling for ${} with {} minutes left. This is {}% of the market value. The URL is {}".format(
+                        #    item['title'], price, (
+                        #        endTime - datetime.now()).seconds / 60,
+                        #    round(price / search['price'], 2) * 100, item['viewItemURL']))
                     click.echo("The item {} is selling for ${} with {} minutes left. This is {}% of the market value. The URL is {}".format(
                         item['title'], price, (
                             endTime - datetime.now()).seconds / 60,

@@ -9,6 +9,7 @@ import click
 def runner():
     if len(sys.argv) != 3:
         click.echo("Not enough params. Expecting modules and arguments as parameters")
+        return
 
     modules = sys.argv[1].split(",")
     argDict = generateArgumentsDict(sys.argv[2])

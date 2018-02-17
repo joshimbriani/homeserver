@@ -11,7 +11,7 @@ from utilities.misc import formatCron
 
 @click.command()
 @click.option('--verbose', is_flag=True, help="Will print verbose messages.")
-@click.option('--list', is_flag=True, help="Lists all current jobs. Will quit when listing is complete.")
+@click.option('--list', '-l', is_flag=True, help="Lists all current jobs. Will quit when listing is complete.")
 @click.option('--kill', '-k', is_flag=True, help="Kills all current homeserver jobs.")
 @click.option('--modules', '-m', type=click.STRING, multiple=True, default='', help='Modules to start cron with. Input as a comma delimited list.')
 @click.option('--frequency', '-f', type=click.STRING, help='Frequency to run the cron job (in minutes).')
