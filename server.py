@@ -1,9 +1,20 @@
 from flask import Flask, render_template
 import os
-#from homeserver.web.routes.waitTime import waittime
+from routes.coasters.waitTime import waittime
+from routes.coasters.screamscape import screamscape
+from routes.coasters.goals import coastergoals
+from database import db_session, init_db
 
 app = Flask(__name__)
-#app.register_blueprint(waittime, url_prefix='/api/waittime')
+app.register_blueprint(waittime, url_prefix='/api/v1/waittime')
+app.register_blueprint(screamscape, url_prefix='/api/v1/screamscape')
+app.register_blueprint(coastergoals, url_prefix='/api/v1/coastergoals')
+
+init_db()
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
 
 @app.route("/", defaults={'u_path': ''})
 @app.route('/<path:u_path>')
@@ -11,4 +22,4 @@ def hello(u_path):
     return render_template('index.html')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=os.environ.get('PORT', 3000), debug=True)
+    app.run(host='0.0.0.0', port=os.environ.get('PORT', 4004), debug=True)
