@@ -11,6 +11,7 @@ import CodeIcon from '@material-ui/icons/Code';
 import TrainIcon from '@material-ui/icons/Train';
 import WebIcon from '@material-ui/icons/Web';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import CalendarIcon from '@material-ui/icons/CalendarToday';
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -21,6 +22,18 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <CalendarIcon />
+      </ListItemIcon>
+      <ListItemText primary="Important Today" />
+    </ListItem>
+  </div>
+);
+
+export const secondaryListItems = (
+  <div>
+    <ListSubheader inset>Saved reports</ListSubheader>
     <ListItem component={Link} to="/about" button>
       <ListItemIcon>
         <AssignmentIcon />
@@ -62,30 +75,6 @@ export const mainListItems = (
         <CodeIcon />
       </ListItemIcon>
       <ListItemText primary="Code" />
-    </ListItem>
-  </div>
-);
-
-export const secondaryListItems = (
-  <div>
-    <ListSubheader inset>Saved reports</ListSubheader>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Current month" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
     </ListItem>
   </div>
 );
