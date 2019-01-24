@@ -46,7 +46,7 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Health" />
     </ListItem>
-    <ListItem component={Link} to="/about" button>
+    <ListItem component={Link} to="/themeparks" button>
       <ListItemIcon>
         <TrainIcon />
       </ListItemIcon>

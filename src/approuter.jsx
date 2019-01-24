@@ -17,6 +17,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './draweritems.jsx';
 
+import CoasterIndex from './themeparks/index.jsx';
+
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -168,6 +170,7 @@ class Dashboard extends React.Component {
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Route path="/" exact component={() => <h2>Home</h2>} />
+            <Route path="/themeparks/" component={() => <CoasterIndex />} />
             <Route path="/about/" component={() => <h2>About</h2>} />
             <Route path="/users/" component={() => <h2>Users</h2>} />
           </main>
