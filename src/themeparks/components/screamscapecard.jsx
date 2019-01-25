@@ -15,6 +15,7 @@ class ScreamscapeCard extends React.Component {
             loading: false
         }
     }
+    
     componentDidMount() {
         this.setState({ loading: true })
         fetch(URL + "api/v1/screamscape")
