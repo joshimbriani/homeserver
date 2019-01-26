@@ -195,4 +195,6 @@ settings/
 
 node_modules/*
 
+static/*
+
 # End of https://www.gitignore.io/api/linux,macos,python,windows,virtualenv,visualstudiocode

@@ -8,3 +8,6 @@ class CoasterGoalNote(Base):
     goal = Column(Integer, ForeignKey('coastergoals.id'))
     contents = Column(String(2000), unique=False)
     created = Column(DateTime, default=datetime.datetime.utcnow)
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}

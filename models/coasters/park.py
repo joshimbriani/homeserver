@@ -11,3 +11,6 @@ class CoasterPark(Base):
     wikipediaLink = Column(String(500), unique=False)
     rides = relationship('CoasterRide')
     abbrev = Column(String(10), unique=False)
+
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}

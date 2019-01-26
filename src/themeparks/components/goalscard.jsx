@@ -1,7 +1,11 @@
 import React from 'react';
-import { Paper, Typography, Card, CardHeader, CardContent } from '@material-ui/core';
+import { Grid, Paper, Typography, Card, CardMedia, CardContent, CardActionArea, CardActions, Button } from '@material-ui/core';
 import Carousel from '../../reusable/carousel.jsx';
 import { Link } from "react-router-dom";
+import { URL } from '../../utils/network';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Line } from 'rc-progress';
 
 const styles = {
     card: {
@@ -19,13 +23,14 @@ class GoalsCard extends React.Component {
 
         this.state = {
             goals: [],
-            loading: false
+            loading: false,
+            showIndex: 0
         }
     }
 
     componentDidMount() {
         this.setState({ loading: true })
-        fetch(URL + "api/v1/goals?status=active&limit=5")
+        fetch(URL + "api/v1/coastergoals?status=1&limit=5")
             .then(response => response.json())
             .then(responseJSON => this.setState({ goals: responseJSON, loading: false }))
     }
@@ -53,17 +58,32 @@ class GoalsCard extends React.Component {
                         No Goals
                 </Typography>
                 </div>}
-                <Carousel>
+                <Grid container spacing={24}>
+                    <Grid item xs={12} sm={6} style={{ textAlign: 'center' }}>
+                        <ArrowBackIcon onClick={() => {
+                            const max = this.state.goals.length;
+                            this.setState({ showIndex: (this.state.showIndex - 1) < 0 ? (max - 1) : (this.state.showIndex - 1) });
+                            console.log(max, this.state.showIndex)
+                        }} />
+                    </Grid>
+                    <Grid item xs={12} sm={6} style={{ textAlign: 'center' }}>
+                        <ArrowForwardIcon onClick={() => {
+                            const max = this.state.goals.length;
+                            this.setState({ showIndex: (this.state.showIndex + 1) >= max ? 0 : (this.state.showIndex + 1) });
+                        }} />
+                    </Grid>
+                </Grid>
+                <Carousel showIndex={this.state.showIndex}>
                     {this.state.goals.map((goal) => {
                         return (
-                            <Card className={classes.card}>
+                            <Card style={styles.card}>
                                 <CardActionArea>
                                     <CardMedia
                                         component="img"
                                         alt={goal.title}
-                                        className={classes.media}
+                                        style={styles.media}
                                         height="140"
-                                        image="/static/images/cards/contemplative-reptile.jpg"
+                                        image={"/static/uploads/" + goal.title + ".jpeg"}
                                         title={goal.title}
                                     />
                                     <CardContent>
@@ -73,6 +93,9 @@ class GoalsCard extends React.Component {
                                         <Typography component="p">
                                             {goal.description}
                                         </Typography>
+                                        <div style={{marginTop: 10}}>
+                                            <Line percent={goal.progress} strokeWidth="4" strokeColor="#2196F3" />
+                                        </div>
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>

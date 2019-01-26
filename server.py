@@ -4,8 +4,10 @@ from routes.coasters.waitTime import waittime
 from routes.coasters.screamscape import screamscape
 from routes.coasters.goals import coastergoals
 from database import db_session, init_db
+from utilities.constants import UPLOAD_FOLDER
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.register_blueprint(waittime, url_prefix='/api/v1/waittime')
 app.register_blueprint(screamscape, url_prefix='/api/v1/screamscape')
 app.register_blueprint(coastergoals, url_prefix='/api/v1/coastergoals')

@@ -40,7 +40,7 @@ class ScreamscapeCard extends React.Component {
                 </p>}
                 {this.state.articles.map((article, index) => {
                     return (
-                        <ListItemLink href={article[1]}>
+                        <ListItemLink href={article[1]} target="_blank">
                             <ListItemText primary={article[0]} />
                         </ListItemLink>
                     )
