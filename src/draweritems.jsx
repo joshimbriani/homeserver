@@ -22,18 +22,6 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <CalendarIcon />
-      </ListItemIcon>
-      <ListItemText primary="Important Today" />
-    </ListItem>
-  </div>
-);
-
-export const secondaryListItems = (
-  <div>
-    <ListSubheader inset>Saved reports</ListSubheader>
     <ListItem component={Link} to="/about" button>
       <ListItemIcon>
         <AssignmentIcon />
