@@ -8,7 +8,6 @@ import CoasterGoalsSpec from './goalsSpec.jsx';
 class CoasterIndex extends React.Component {
     render() {
         return (
-            <Router>
                 <div>
                     <Route exact path={`${this.props.match.url}/`} component={() => <CoasterHome />} />
                     <Route exact path={`${this.props.match.url}/goals/`} component={() => <CoasterHome />} />
@@ -17,7 +16,6 @@ class CoasterIndex extends React.Component {
                     <Route exact path={`${this.props.match.url}/parks/:parkid/`} component={() => <CoasterHome />} />
                     <Route path={`${this.props.match.url}/parks/:parkid/:rideid`} component={() => <CoasterHome />} />
                 </div>
-            </Router>
         )
     }
 }

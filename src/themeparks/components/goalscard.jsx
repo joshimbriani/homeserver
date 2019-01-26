@@ -26,13 +26,28 @@ class GoalsCard extends React.Component {
             loading: false,
             showIndex: 0
         }
+
+        this.timer = this.timer.bind(this);
     }
 
     componentDidMount() {
-        this.setState({ loading: true })
+        this.setState({ loading: true });
         fetch(URL + "api/v1/coastergoals?status=1&limit=5")
             .then(response => response.json())
-            .then(responseJSON => this.setState({ goals: responseJSON, loading: false }))
+            .then(responseJSON => this.setState({ goals: responseJSON, loading: false }));
+
+        var intervalId = setInterval(this.timer, 10000);
+        this.setState({ intervalId: intervalId });
+    }
+
+    componentWillUnmount() {
+        // use intervalId from the state to clear the interval
+        clearInterval(this.state.intervalId);
+    }
+
+    timer() {
+        // setState method is used to update the state
+        this.setState({ showIndex: (this.state.showIndex + 1) >= this.state.goals.length ? 0 : (this.state.showIndex + 1) });
     }
 
     render() {
@@ -93,7 +108,7 @@ class GoalsCard extends React.Component {
                                         <Typography component="p">
                                             {goal.description}
                                         </Typography>
-                                        <div style={{marginTop: 10}}>
+                                        <div style={{ marginTop: 10 }}>
                                             <Line percent={goal.progress} strokeWidth="4" strokeColor="#2196F3" />
                                         </div>
                                     </CardContent>
