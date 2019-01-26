@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from models.coasters.goals import CoasterGoal
 import json
 import os
-from database import db_session
+from database import db
 from utilities.constants import UPLOAD_FOLDER
 
 coastergoals = Blueprint('coastergoals', __name__)
@@ -19,8 +19,8 @@ def getAllGoals():
         upload.save(destination)
 
         goal = CoasterGoal(title=request.form['title'], description=request.form['description'], progress=int(request.form["progress"]), status=int(request.form["status"]))
-        db_session.add(goal)
-        db_session.commit()
+        db.session.add(goal)
+        db.session.commit()
 
         return json.dumps({"success": True, "id": goal.id}), 201
     else:
