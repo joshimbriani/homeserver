@@ -15,7 +15,8 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './draweritems.jsx';
+import { mainListItems } from './draweritems.jsx';
+import { CoasterListItems } from './themeparks/components/listItems.jsx'
 
 import CoasterIndex from './themeparks/index.jsx';
 
@@ -141,7 +142,7 @@ class Dashboard extends React.Component {
                 noWrap
                 className={classes.title}
               >
-                Dashboard
+                Josh's Dashboard
             </Typography>
               <IconButton color="inherit">
                 <Badge badgeContent={4} color="secondary">
@@ -165,7 +166,10 @@ class Dashboard extends React.Component {
             <Divider />
             <List>{mainListItems}</List>
             <Divider />
-            <List>{secondaryListItems}</List>
+            <List>
+              <Route path="/" exact component={() => CoasterListItems} />
+              <Route path="/themeparks" component={() => CoasterListItems} />
+            </List>
           </Drawer>
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
