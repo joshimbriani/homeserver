@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
-from database import db
-from models.coasters.note import CoasterGoalNote
+from homeserver.database import db
+from homeserver.models.coasters.note import CoasterGoalNote
 
 class CoasterGoal(db.Model):
     __tablename__ = 'coastergoals'

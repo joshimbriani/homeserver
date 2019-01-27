@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
-from database import db
+from homeserver.database import db
 import datetime
 
 class CoasterGoalNote(db.Model):

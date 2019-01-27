@@ -1,9 +1,9 @@
 from flask import Blueprint, request
-from models.coasters.goals import CoasterGoal
+from homeserver.models.coasters.goals import CoasterGoal
 import json
 import os
-from database import db
-from utilities.constants import UPLOAD_FOLDER
+from homeserver.database import db
+from homeserver.utilities.constants import UPLOAD_FOLDER
 
 coastergoals = Blueprint('coastergoals', __name__)
 
