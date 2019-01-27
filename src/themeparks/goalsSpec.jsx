@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
-import { Fab, Paper, Typography, TextField, Button,Card, CardActionArea, CardMedia, CardContent, CardActions, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Fab, Paper, Typography, TextField, Button, Card, CardActionArea, CardMedia, CardContent, CardActions, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { URL } from '../utils/network';
 import EditIcon from '@material-ui/icons/Edit';
 import { Line } from 'rc-progress';
@@ -73,13 +73,12 @@ class GoalsSpec extends React.Component {
             return (
                 <Paper style={{ padding: 10 }}>
                     <Card style={styles.card}>
-                        <CardActionArea>
                             <CardMedia
                                 component="img"
                                 alt={this.state.name}
                                 style={styles.media}
                                 height="140"
-                                image={"/static/uploads/" + this.state.name + ".jpeg"}
+                                image={"/static/uploads/" + this.state.goal.name + ".jpeg"}
                                 title={this.state.name}
                             />
                             <CardContent>
@@ -144,7 +143,6 @@ class GoalsSpec extends React.Component {
                                     Save
                                 </Button>
                             </CardActions>
-                        </CardActionArea>
                     </Card>
                 </Paper>
             )
@@ -152,7 +150,6 @@ class GoalsSpec extends React.Component {
             return (
                 <Paper style={{ padding: 10 }}>
                     <Card style={styles.card}>
-                        <CardActionArea>
                             <CardMedia
                                 component="img"
                                 alt={this.state.name}
@@ -178,7 +175,6 @@ class GoalsSpec extends React.Component {
                                     <Line percent={this.state.progress} strokeWidth="4" strokeColor="#2196F3" />
                                 </div>
                             </CardContent>
-                        </CardActionArea>
                     </Card>
                     <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} color={'#F44336'} onClick={() => this.setState({ editing: true })}>
                         <EditIcon />

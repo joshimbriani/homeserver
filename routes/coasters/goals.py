@@ -29,8 +29,10 @@ def getAllGoals():
         goals = CoasterGoal.query
 
         try:
-            status = int(status)
-            limit = int(limit)
+            if status:
+                status = int(status)
+            if limit:
+                limit = int(limit)
         except ValueError:
             return json.dumps({'error': "Can't convert id to int."}), 500
         if status:
@@ -50,6 +52,7 @@ def getSpecGoal(goalid):
         return json.dumps({'error': "Can't convert id to int."}), 500
     if request.method == 'PUT':
         goal = CoasterGoal.query.get(goalid)
+        
         if "title" in request.form:
             goal.title = request.form["title"]
         if "description" in request.form:
@@ -64,6 +67,9 @@ def getSpecGoal(goalid):
             mimetype = request.files["picture"].content_type
             destination = "/".join([UPLOAD_FOLDER, goal.title]) + "." + mimetype[6:]
             upload.save(destination)
+
+        db.session.add(goal)
+        db.session.commit()
         
         return json.dumps({"success": True, "goal": goal.as_dict()}), 200
     else:

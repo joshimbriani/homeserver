@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, withRouter } from "react-router-dom";
 
 import CoasterHome from './home.jsx';
+import CoasterGoals from './goals.jsx';
 import CoasterGoalsNew from './goalsNew.jsx';
 import CoasterGoalsSpec from './goalsSpec.jsx';
 
@@ -10,7 +11,7 @@ class CoasterIndex extends React.Component {
         return (
                 <div>
                     <Route exact path={`${this.props.match.url}/`} component={() => <CoasterHome />} />
-                    <Route exact path={`${this.props.match.url}/goals`} component={() => <CoasterHome />} />
+                    <Route exact path={`${this.props.match.url}/goals`} component={() => <CoasterGoals />} />
                     <Route exact path={`${this.props.match.url}/goals/new`} component={() => <CoasterGoalsNew />} />
                     <Route path={`${this.props.match.url}/goals/:goalid([0-9]+)`} component={() => <CoasterGoalsSpec />} />
                     <Route exact path={`${this.props.match.url}/parks/:parkid`} component={() => <CoasterHome />} />

@@ -10,6 +10,7 @@ from homeserver.routes.coasters.goals import coastergoals
 from homeserver.routes.coasters.screamscape import screamscape
 from homeserver.routes.coasters.waitTime import waittime
 from homeserver.utilities.constants import UPLOAD_FOLDER
+from sqlalchemy_utils import create_database, database_exists
 
 from homeserver.models.coasters.goals import CoasterGoal
 from homeserver.models.coasters.note import CoasterGoalNote
@@ -29,6 +30,10 @@ migrate = Migrate(app, db)
 
 with app.app_context():
     db.init_app(app)
+    if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
+        create_database(app.config['SQLALCHEMY_DATABASE_URI'], encoding='utf8mb4')
+        db.create_all()
+        db.session.commit()
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
