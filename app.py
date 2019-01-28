@@ -9,6 +9,8 @@ from homeserver.routes.coasters.articles import articles
 from homeserver.routes.coasters.goals import coastergoals
 from homeserver.routes.coasters.screamscape import screamscape
 from homeserver.routes.coasters.waitTime import waittime
+from homeserver.routes.coasters.tripjournal import tripjournals
+from homeserver.routes.coasters.parks import parks
 from homeserver.utilities.constants import UPLOAD_FOLDER
 from sqlalchemy_utils import create_database, database_exists
 
@@ -16,6 +18,7 @@ from homeserver.models.coasters.goals import CoasterGoal
 from homeserver.models.coasters.note import CoasterGoalNote
 from homeserver.models.coasters.park import CoasterPark
 from homeserver.models.coasters.ride import CoasterRide
+from homeserver.models.coasters.journalEntry import CoasterJournalEntry
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -25,6 +28,8 @@ app.register_blueprint(waittime, url_prefix='/api/v1/waittime')
 app.register_blueprint(screamscape, url_prefix='/api/v1/screamscape')
 app.register_blueprint(coastergoals, url_prefix='/api/v1/coastergoals')
 app.register_blueprint(articles, url_prefix='/api/v1/coasters/articles')
+app.register_blueprint(tripjournals, url_prefix='/api/v1/coasters/journals')
+app.register_blueprint(parks, url_prefix='/api/v1/coasters/parks')
 
 migrate = Migrate(app, db)
 

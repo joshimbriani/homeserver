@@ -5,7 +5,7 @@ import datetime
 class CoasterGoalNote(db.Model):
     __tablename__ = 'coastergoalnotes'
     id = db.Column(db.Integer, primary_key=True)
-    goal = db.Column(db.Integer, ForeignKey('coastergoals.id'))
+    goal = db.Column(db.Integer, db.ForeignKey('coastergoals.id'))
     contents = db.Column(db.String(2000), unique=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 

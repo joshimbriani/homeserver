@@ -176,7 +176,7 @@ class GoalsSpec extends React.Component {
                                 </div>
                             </CardContent>
                     </Card>
-                    <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} color={'#F44336'} onClick={() => this.setState({ editing: true })}>
+                    <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ editing: true })}>
                         <EditIcon />
                     </Fab>
                 </Paper>

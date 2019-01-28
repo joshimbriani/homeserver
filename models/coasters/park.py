@@ -15,6 +15,7 @@ class CoasterPark(db.Model):
     address = db.Column(db.String(100), unique=False)
     openDate = db.Column(db.String(40), unique=False)
     statusDate = db.Column(db.String(40), unique=False)
+    journalEntries = db.relationship('CoasterJournalEntry')
 
 
     def as_dict(self):
