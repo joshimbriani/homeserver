@@ -1,10 +1,11 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
-import { Fab, Paper, Typography, TextField, Button, Card, CardActionArea, CardMedia, CardContent, CardActions, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Fab, Paper, Typography, TextField, Button, Card, CardActionArea, CardMedia, CardContent, CardActions, FormControl, InputLabel, Select, MenuItem, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
 import { URL } from '../utils/network';
 import EditIcon from '@material-ui/icons/Edit';
 import { Line } from 'rc-progress';
 import { withRouter } from "react-router-dom";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 const styles = {
     media: {
@@ -24,7 +25,9 @@ class GoalsSpec extends React.Component {
             editing: false,
             goal: {},
             status: 1,
-            loading: false
+            loading: false,
+            open: false,
+            redirect: false
         }
 
         this.handleEdit = this.handleEdit.bind(this);
@@ -68,11 +71,29 @@ class GoalsSpec extends React.Component {
         }
     }
 
+    deleteGoal() {
+        fetch(URL + 'api/v1/coastergoals/' + this.props.match.params.goalid, {
+            method: 'DELETE',
+        }).then(response => response.json())
+            .then(responseJSON => {
+                if (responseJSON["success"]) {
+                    this.setState({ redirect: true })
+                }
+            })
+    }
+
     render() {
+        if (this.state.redirect) {
+            return (
+                <Redirect to={"/themeparks/goals"} />
+            )
+        }
+
         if (this.state.editing) {
             return (
-                <Paper style={{ padding: 10 }}>
-                    <Card style={styles.card}>
+                <div>
+                    <Paper style={{ padding: 10 }}>
+                        <Card style={styles.card}>
                             <CardMedia
                                 component="img"
                                 alt={this.state.name}
@@ -143,38 +164,63 @@ class GoalsSpec extends React.Component {
                                     Save
                                 </Button>
                             </CardActions>
-                    </Card>
-                </Paper>
+                        </Card>
+                        <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ open: true })}>
+                            <DeleteForeverIcon />
+                        </Fab>
+                    </Paper>
+                    <Dialog
+                        open={this.state.open}
+                        onClose={() => this.setState({ open: false })}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this goal?"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                If you can't accomplish this, please mark this as abandoned. This is meant for mistake goals.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => this.setState({ open: false })} color="primary" autoFocus>
+                                Nah
+                    </Button>
+                            <Button onClick={() => { this.deleteGoal(); this.setState({ open: false }) }} color="primary">
+                                Let's Do it!
+                    </Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
             )
         } else {
             return (
                 <Paper style={{ padding: 10 }}>
                     <Card style={styles.card}>
-                            <CardMedia
-                                component="img"
-                                alt={this.state.name}
-                                style={styles.media}
-                                height="140"
-                                image={"/static/uploads/" + (this.state.name !== "" ? this.state.name : "loading") + ".jpeg"}
-                                title={this.state.name}
-                            />
-                            <CardContent>
-                                <Typography variant="h6" color="textSecondary" component="p">
-                                    Title
+                        <CardMedia
+                            component="img"
+                            alt={this.state.name}
+                            style={styles.media}
+                            height="140"
+                            image={"/static/uploads/" + (this.state.name !== "" ? this.state.name : "loading") + ".jpeg"}
+                            title={this.state.name}
+                        />
+                        <CardContent>
+                            <Typography variant="h6" color="textSecondary" component="p">
+                                Title
                                 </Typography>
-                                <Typography variant="h5" component="h2" paragraph>
-                                    {this.state.name}
+                            <Typography variant="h5" component="h2" paragraph>
+                                {this.state.name}
+                            </Typography>
+                            <Typography variant="h6" color="textSecondary" component="p">
+                                Description
                                 </Typography>
-                                <Typography variant="h6" color="textSecondary" component="p">
-                                    Description
-                                </Typography>
-                                <Typography>
-                                    {this.state.description}
-                                </Typography>
-                                <div style={{ marginTop: 10 }}>
-                                    <Line percent={this.state.progress} strokeWidth="4" strokeColor="#2196F3" />
-                                </div>
-                            </CardContent>
+                            <Typography>
+                                {this.state.description}
+                            </Typography>
+                            <div style={{ marginTop: 10 }}>
+                                <Line percent={this.state.progress} strokeWidth="4" strokeColor="#2196F3" />
+                            </div>
+                        </CardContent>
                     </Card>
                     <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ editing: true })}>
                         <EditIcon />

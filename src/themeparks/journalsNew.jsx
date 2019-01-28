@@ -4,6 +4,7 @@ import { Grid, Paper, Typography, TextField, Button } from '@material-ui/core';
 import { URL } from '../utils/network';
 import moment from 'moment';
 import AsyncSelect from 'react-select/lib/Async';
+import { DatePicker } from 'material-ui-pickers';
 
 class JournalsNew extends React.Component {
     constructor(props) {
@@ -88,14 +89,9 @@ class JournalsNew extends React.Component {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                id="journal-datetime"
-                                label="Date"
+                            <DatePicker
                                 value={this.state.datetime}
-                                type="date"
-                                fullWidth
-                                onChange={(event) => this.setState({ datetime: event.target.value })}
-                                formatDate={(date) => moment(new Date()).format('MM-DD-YYYY')}
+                                onChange={(date) => this.setState({ datetime: date })}
                             />
                         </Grid>
                         <Grid item xs={12}>

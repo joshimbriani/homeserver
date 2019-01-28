@@ -1,8 +1,9 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
-import { Fab, Paper, Typography, TextField, Button, Card, Divider, CardMedia, CardContent, CardActions, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Fab, Paper, Typography, TextField, Button, Card, Divider, CardMedia, CardContent, CardActions, Dialog, DialogActions, DialogTitle } from '@material-ui/core';
 import { URL } from '../utils/network';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { withRouter } from "react-router-dom";
 import moment from 'moment';
 import Markdown from 'react-remarkable';
@@ -32,7 +33,9 @@ class JournalsSpec extends React.Component {
                     name: ""
                 }
             },
-            loading: false
+            loading: false,
+            open: false,
+            redirect: false
         }
 
         this.handleEdit = this.handleEdit.bind(this);
@@ -92,6 +95,17 @@ class JournalsSpec extends React.Component {
         this.setState({ park: park });
     }
 
+    deleteJournal() {
+        fetch(URL + 'api/v1/coasters/journals/' + this.props.match.params.journalid, {
+            method: 'DELETE',
+        }).then(response => response.json())
+            .then(responseJSON => {
+                if (responseJSON["success"]) {
+                    this.setState({ redirect: true })
+                }
+            })
+    }
+
     render() {
         const promiseOptions = (inputValue, callback) => {
             fetch(URL + 'api/v1/coasters/parks?limit=5&nameContains=' + inputValue).then(response => response.json())
@@ -105,70 +119,97 @@ class JournalsSpec extends React.Component {
                 })
         }
 
+        if (this.state.redirect) {
+            return (
+                <Redirect to={"/themeparks/journals"} />
+            )
+        }
+
         if (this.state.editing) {
             return (
-                <Paper style={{ padding: 10 }}>
-                    <Card style={styles.card}>
-                        <CardMedia
-                            component="img"
-                            alt={this.state.title}
-                            style={styles.media}
-                            height="140"
-                            image={"/static/uploads/journalEntry/" + this.state.journal.id + ".jpeg"}
-                            title={this.state.title}
-                        />
-                        <CardContent>
-                            <TextField
-                                id="journal-title"
-                                label="Name"
-                                value={this.state.title}
-                                fullWidth
-                                onChange={(event) => this.setState({ title: event.target.value })}
+                <div>
+                    <Paper style={{ padding: 10 }}>
+                        <Card style={styles.card}>
+                            <CardMedia
+                                component="img"
+                                alt={this.state.title}
+                                style={styles.media}
+                                height="140"
+                                image={"/static/uploads/journalEntry/" + this.state.journal.id + ".jpeg"}
+                                title={this.state.title}
                             />
-                            <DatePicker 
-                                value={this.state.datetime} 
-                                onChange={(date) => this.setState({ datetime: date })} 
-                            />
-                            <TextField
-                                id="goal-content"
-                                label="Content"
-                                multiline
-                                rows="20"
-                                value={this.state.content}
-                                onChange={(event) => this.setState({ content: event.target.value })}
-                                margin="normal"
-                                fullWidth
-                            />
-                            <AsyncSelect
-                                cacheOptions
-                                loadOptions={promiseOptions}
-                                defaultOptions
-                                value={this.state.park}
-                                onChange={(selectedOption) => this.setState({ park: selectedOption })}
-                            />
-                        </CardContent>
-                        <CardActions>
-                            <Button
-                                variant="contained"
-                                component="label"
-                            >
-                                Upload Image
-                                    <input
-                                    ref={(ref) => { this.uploadInput = ref; }}
-                                    type="file"
-                                    name="picture"
-                                    style={{ display: "none" }}
+                            <CardContent>
+                                <TextField
+                                    id="journal-title"
+                                    label="Name"
+                                    value={this.state.title}
+                                    fullWidth
+                                    onChange={(event) => this.setState({ title: event.target.value })}
                                 />
+                                <DatePicker
+                                    value={this.state.datetime}
+                                    onChange={(date) => this.setState({ datetime: date })}
+                                />
+                                <TextField
+                                    id="goal-content"
+                                    label="Content"
+                                    multiline
+                                    rows="20"
+                                    value={this.state.content}
+                                    onChange={(event) => this.setState({ content: event.target.value })}
+                                    margin="normal"
+                                    fullWidth
+                                />
+                                <AsyncSelect
+                                    cacheOptions
+                                    loadOptions={promiseOptions}
+                                    defaultOptions
+                                    value={this.state.park}
+                                    onChange={(selectedOption) => this.setState({ park: selectedOption })}
+                                />
+                            </CardContent>
+                            <CardActions>
+                                <Button
+                                    variant="contained"
+                                    component="label"
+                                >
+                                    Upload Image
+                                    <input
+                                        ref={(ref) => { this.uploadInput = ref; }}
+                                        type="file"
+                                        name="picture"
+                                        style={{ display: "none" }}
+                                    />
+                                </Button>
+                                <Button size="small" color="primary" onClick={() => this.cancelEdit()}>
+                                    Cancel
+                                </Button>
+                                <Button size="small" color="primary" onClick={() => this.handleEdit()}>
+                                    Save
+                                </Button>
+                            </CardActions>
+                        </Card>
+                        <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ open: true })}>
+                            <DeleteForeverIcon />
+                        </Fab>
+                    </Paper>
+                    <Dialog
+                        open={this.state.open}
+                        onClose={() => this.setState({ open: false })}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this journal?"}</DialogTitle>
+                        <DialogActions>
+                            <Button onClick={() => this.setState({ open: false })} color="primary" autoFocus>
+                                Nah
                             </Button>
-                            <Button size="small" color="primary" onClick={() => this.cancelEdit()}>
-                                Cancel
-                                </Button>
-                            <Button size="small" color="primary" onClick={() => this.handleEdit()}>
-                                Save
-                                </Button>
-                        </CardActions>
-                    </Card>
-                </Paper>
+                            <Button onClick={() => { this.deleteJournal(); this.setState({ open: false }) }} color="primary">
+                                Let's Do it!
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
             )
         } else {
             return (

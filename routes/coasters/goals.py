@@ -44,7 +44,7 @@ def getAllGoals():
             goalsSerial.append(goal.as_dict())
         return json.dumps(goalsSerial)
 
-@coastergoals.route('/<goalid>', methods=['GET', 'PUT'])
+@coastergoals.route('/<goalid>', methods=['GET', 'PUT', 'DELETE'])
 def getSpecGoal(goalid):
     try:
         goalid = int(goalid)
@@ -72,6 +72,12 @@ def getSpecGoal(goalid):
         db.session.commit()
         
         return json.dumps({"success": True, "goal": goal.as_dict()}), 200
+    elif request.method == 'DELETE':
+        goal = CoasterGoal.query.get(goalid)
+        db.session.delete(goal)
+        db.session.commit()
+
+        return json.dumps({ "success": True }), 200 
     else:
         goal = CoasterGoal.query.get(goalid)
         if not goal:

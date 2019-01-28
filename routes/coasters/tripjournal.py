@@ -44,7 +44,7 @@ def getAllJournals():
             journalsSerial.append(journal.as_dict())
         return json.dumps(journalsSerial)
 
-@tripjournals.route('/<int:journalid>', methods=['GET', 'PUT'])
+@tripjournals.route('/<int:journalid>', methods=['GET', 'PUT', 'DELETE'])
 def getSpecJournal(journalid):
     try:
         journalid = int(journalid)
@@ -73,6 +73,12 @@ def getSpecJournal(journalid):
         db.session.commit()
         
         return json.dumps({"success": True, "journal": journal.as_dict()}), 200
+    elif request.method == 'DELETE':
+        journal = CoasterJournalEntry.query.get(journalid)
+        db.session.delete(journal)
+        db.session.commit()
+
+        return json.dumps({ "success": True }), 200 
     else:
         journal = CoasterJournalEntry.query.get(journalid)
         if not journal:
