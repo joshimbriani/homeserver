@@ -105,7 +105,7 @@ class GoalsCard extends React.Component {
                                             alt={goal.title}
                                             style={styles.media}
                                             height="140"
-                                            image={"/static/uploads/" + goal.title + ".jpeg"}
+                                            image={"/static/uploads/themeparks/goals/" + goal.id + ".jpeg"}
                                             title={goal.title}
                                         />
                                         <CardContent>

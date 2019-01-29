@@ -19,7 +19,7 @@ class CoasterHome extends React.Component {
                     <ArticlesCard />
                 </Grid>
                 <Grid item xs={8}>
-                    <ParkCard park={{name: "Islands of Adventure"}} />
+                    <ParkCard park={"IOA"} />
                 </Grid>
             </Grid>
             </DocumentTitle>

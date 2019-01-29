@@ -12,7 +12,7 @@ class ParkCard extends React.Component {
         super(props);
 
         this.state = {
-            articles: [],
+            park: [],
             loading: false
         }
     }
