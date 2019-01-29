@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Grid, Paper } from '@material-ui/core';
+import DocumentTitle from 'react-document-title';
 
 import ScreamscapeCard from './components/screamscapecard.jsx';
 import ArticlesCard from './components/articlescard.jsx';
@@ -10,6 +11,7 @@ import GoalCard from './components/goalscard.jsx';
 class CoasterHome extends React.Component {
     render() {
         return (
+            <DocumentTitle title="Josh's Dashboard - Theme Parks - Home">
             <Grid container spacing={16}>
                 <Grid item xs={4}>
                     <ScreamscapeCard />
@@ -20,6 +22,7 @@ class CoasterHome extends React.Component {
                     <ParkCard park={{name: "Islands of Adventure"}} />
                 </Grid>
             </Grid>
+            </DocumentTitle>
         )
     }
 }

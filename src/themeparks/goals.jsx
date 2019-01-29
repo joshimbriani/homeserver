@@ -3,6 +3,7 @@ import { Grid, Paper, Typography, Divider, Button, Card, CardActionArea, CardMed
 import { URL } from '../utils/network';
 import { Line } from 'rc-progress';
 import { Link, Redirect } from "react-router-dom";
+import DocumentTitle from 'react-document-title';
 
 const styles = {
     media: {
@@ -56,7 +57,7 @@ class Goals extends React.Component {
                         alt={goal.title}
                         style={styles.media}
                         height="140"
-                        image={"/static/uploads/" + goal.title + ".jpeg"}
+                        image={"/static/uploads/themeparks/goals/" + goal.id + ".jpeg"}
                         title={goal.title}
                     />
                     <CardContent>
@@ -90,59 +91,61 @@ class Goals extends React.Component {
             )
         } else {
             return (
-                <Paper style={{ padding: 10 }}>
-                    <Typography variant="h5" component="h2">
-                        Goals
+                <DocumentTitle title="Josh's Dashboard - Theme Parks - Goals">
+                    <Paper style={{ padding: 10 }}>
+                        <Typography variant="h5" component="h2">
+                            Goals
                     </Typography>
-                    <Divider variant="middle" style={{ marginTop: 10, marginBottom: 10 }} />
-                    <Typography variant="h5" component="h3">
-                        Active
+                        <Divider variant="middle" style={{ marginTop: 10, marginBottom: 10 }} />
+                        <Typography variant="h5" component="h3">
+                            Active
                     </Typography>
-                    <Grid container spacing={24}>
-                        {this.state.activeGoals.map((goal, index) => {
-                            return (
-                                <Grid item xs={6}>
-                                    {this.renderCard(goal)}
-                                </Grid>
-                            )
-                        })}
-                        {this.state.activeGoals.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
-                            No Active Goals
+                        <Grid container spacing={24}>
+                            {this.state.activeGoals.map((goal, index) => {
+                                return (
+                                    <Grid item xs={6}>
+                                        {this.renderCard(goal)}
+                                    </Grid>
+                                )
+                            })}
+                            {this.state.activeGoals.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
+                                No Active Goals
                         </Typography>}
-                    </Grid>
-                    <Divider variant="middle" style={{ marginTop: 10, marginBottom: 10 }} />
-                    <Typography variant="h5" component="h3">
-                        Abandoned
+                        </Grid>
+                        <Divider variant="middle" style={{ marginTop: 10, marginBottom: 10 }} />
+                        <Typography variant="h5" component="h3">
+                            Abandoned
                     </Typography>
-                    <Grid container spacing={24}>
-                        {this.state.abandonedGoals.map((goal, index) => {
-                            return (
-                                <Grid item xs={6}>
-                                    {this.renderCard(goal)}
-                                </Grid>
-                            )
-                        })}
-                        {this.state.abandonedGoals.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
-                            No Abandoned Goals
+                        <Grid container spacing={24}>
+                            {this.state.abandonedGoals.map((goal, index) => {
+                                return (
+                                    <Grid item xs={6}>
+                                        {this.renderCard(goal)}
+                                    </Grid>
+                                )
+                            })}
+                            {this.state.abandonedGoals.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
+                                No Abandoned Goals
                         </Typography>}
-                    </Grid>
-                    <Divider variant="middle" style={{ marginTop: 10, marginBottom: 10 }} />
-                    <Typography variant="h5" component="h3">
-                        Completed
+                        </Grid>
+                        <Divider variant="middle" style={{ marginTop: 10, marginBottom: 10 }} />
+                        <Typography variant="h5" component="h3">
+                            Completed
                     </Typography>
-                    <Grid container spacing={24}>
-                        {this.state.completedGoals.map((goal, index) => {
-                            return (
-                                <Grid item xs={6}>
-                                    {this.renderCard(goal)}
-                                </Grid>
-                            )
-                        })}
-                        {this.state.completedGoals.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
-                            No Completed Goals
+                        <Grid container spacing={24}>
+                            {this.state.completedGoals.map((goal, index) => {
+                                return (
+                                    <Grid item xs={6}>
+                                        {this.renderCard(goal)}
+                                    </Grid>
+                                )
+                            })}
+                            {this.state.completedGoals.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
+                                No Completed Goals
                         </Typography>}
-                    </Grid>
-                </Paper>
+                        </Grid>
+                    </Paper>
+                </DocumentTitle>
             )
         }
 

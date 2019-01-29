@@ -5,6 +5,7 @@ import { URL } from '../utils/network';
 import moment from 'moment';
 import AsyncSelect from 'react-select/lib/Async';
 import { DatePicker } from 'material-ui-pickers';
+import DocumentTitle from 'react-document-title';
 
 class JournalsNew extends React.Component {
     constructor(props) {
@@ -62,67 +63,69 @@ class JournalsNew extends React.Component {
             )
         } else {
             return (
-                <Paper style={{ padding: 10 }}>
-                    <Typography variant="h5" component="h2">
-                        Create a New Journal Entry
+                <DocumentTitle title="Josh's Dashboard - Theme Parks - New Journal">
+                    <Paper style={{ padding: 10 }}>
+                        <Typography variant="h5" component="h2">
+                            Create a New Journal Entry
                     </Typography>
-                    <Grid container spacing={24}>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="journal-name"
-                                label="Title"
-                                value={this.state.name}
-                                fullWidth
-                                onChange={(event) => this.setState({ name: event.target.value })}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="journal-content"
-                                label="Content"
-                                multiline
-                                rows="20"
-                                value={this.state.content}
-                                onChange={(event) => this.setState({ content: event.target.value })}
-                                margin="normal"
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <DatePicker
-                                value={this.state.datetime}
-                                onChange={(date) => this.setState({ datetime: date })}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <AsyncSelect
-                                cacheOptions
-                                loadOptions={promiseOptions}
-                                defaultOptions
-                                onChange={(selectedOption) => this.setState({ park: selectedOption })}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button
-                                variant="contained"
-                                component="label"
-                            >
-                                Upload Image
-                                <input
-                                    ref={(ref) => { this.uploadInput = ref; }}
-                                    type="file"
-                                    name="picture"
-                                    style={{ display: "none" }}
+                        <Grid container spacing={24}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    id="journal-name"
+                                    label="Title"
+                                    value={this.state.name}
+                                    fullWidth
+                                    onChange={(event) => this.setState({ name: event.target.value })}
                                 />
-                            </Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-                                Submit
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    id="journal-content"
+                                    label="Content"
+                                    multiline
+                                    rows="20"
+                                    value={this.state.content}
+                                    onChange={(event) => this.setState({ content: event.target.value })}
+                                    margin="normal"
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <DatePicker
+                                    value={this.state.datetime}
+                                    onChange={(date) => this.setState({ datetime: date })}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <AsyncSelect
+                                    cacheOptions
+                                    loadOptions={promiseOptions}
+                                    defaultOptions
+                                    onChange={(selectedOption) => this.setState({ park: selectedOption })}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    variant="contained"
+                                    component="label"
+                                >
+                                    Upload Image
+                                <input
+                                        ref={(ref) => { this.uploadInput = ref; }}
+                                        type="file"
+                                        name="picture"
+                                        style={{ display: "none" }}
+                                    />
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button variant="contained" color="primary" onClick={this.handleSubmit}>
+                                    Submit
                         </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Paper>
+                    </Paper>
+                </DocumentTitle>
             )
         }
     }

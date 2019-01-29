@@ -6,6 +6,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { Line } from 'rc-progress';
 import { withRouter } from "react-router-dom";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import DocumentTitle from 'react-document-title';
 
 const styles = {
     media: {
@@ -91,7 +92,112 @@ class GoalsSpec extends React.Component {
 
         if (this.state.editing) {
             return (
-                <div>
+                <DocumentTitle title="Josh's Dashboard - Theme Parks - Goal">
+                    <div>
+                        <Paper style={{ padding: 10 }}>
+                            <Card style={styles.card}>
+                                <CardMedia
+                                    component="img"
+                                    alt={this.state.name}
+                                    style={styles.media}
+                                    height="140"
+                                    image={"/static/uploads/themeparks/goals" + this.state.goal.id + ".jpeg"}
+                                    title={this.state.name}
+                                />
+                                <CardContent>
+                                    <TextField
+                                        id="goal-name"
+                                        label="Name"
+                                        value={this.state.name}
+                                        fullWidth
+                                        onChange={(event) => this.setState({ name: event.target.value })}
+                                    />
+                                    <TextField
+                                        id="goal-description"
+                                        label="Description"
+                                        multiline
+                                        rows="4"
+                                        value={this.state.description}
+                                        onChange={(event) => this.setState({ description: event.target.value })}
+                                        margin="normal"
+                                        fullWidth
+                                    />
+                                    <TextField
+                                        id="goal-progress"
+                                        label="Progress"
+                                        value={this.state.progress}
+                                        type="number"
+                                        fullWidth
+                                        onChange={(event) => this.setState({ progress: event.target.value })}
+                                    />
+                                    <FormControl>
+                                        <InputLabel htmlFor="age-simple">Status</InputLabel>
+                                        <Select
+                                            value={this.state.status}
+                                            onChange={() => this.setState({ status: event.target.status })}
+                                            inputProps={{
+                                                name: 'status',
+                                                id: 'status',
+                                            }}
+                                        >
+                                            <MenuItem value={1}>Active</MenuItem>
+                                            <MenuItem value={2}>Abandoned</MenuItem>
+                                            <MenuItem value={3}>Completed</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </CardContent>
+                                <CardActions>
+                                    <Button
+                                        variant="contained"
+                                        component="label"
+                                    >
+                                        Upload Image
+                                    <input
+                                            ref={(ref) => { this.uploadInput = ref; }}
+                                            type="file"
+                                            name="picture"
+                                            style={{ display: "none" }}
+                                        />
+                                    </Button>
+                                    <Button size="small" color="primary" onClick={() => this.setState({ editing: false, title: this.state.goal.title, description: this.state.goal.description, progress: this.state.goal.progress })}>
+                                        Cancel
+                                </Button>
+                                    <Button size="small" color="primary" onClick={() => this.handleEdit()}>
+                                        Save
+                                </Button>
+                                </CardActions>
+                            </Card>
+                            <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ open: true })}>
+                                <DeleteForeverIcon />
+                            </Fab>
+                        </Paper>
+                        <Dialog
+                            open={this.state.open}
+                            onClose={() => this.setState({ open: false })}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this goal?"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    If you can't accomplish this, please mark this as abandoned. This is meant for mistake goals.
+                            </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => this.setState({ open: false })} color="primary" autoFocus>
+                                    Nah
+                    </Button>
+                                <Button onClick={() => { this.deleteGoal(); this.setState({ open: false }) }} color="primary">
+                                    Let's Do it!
+                    </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </div>
+                </DocumentTitle>
+            )
+        } else {
+            return (
+                <DocumentTitle title="Josh's Dashboard - Theme Parks - Goal">
                     <Paper style={{ padding: 10 }}>
                         <Card style={styles.card}>
                             <CardMedia
@@ -99,133 +205,32 @@ class GoalsSpec extends React.Component {
                                 alt={this.state.name}
                                 style={styles.media}
                                 height="140"
-                                image={"/static/uploads/" + this.state.goal.name + ".jpeg"}
+                                image={"/static/uploads/themeparks/goals/" + (this.state.goal.id ? this.state.goal.id : "loading") + ".jpeg"}
                                 title={this.state.name}
                             />
                             <CardContent>
-                                <TextField
-                                    id="goal-name"
-                                    label="Name"
-                                    value={this.state.name}
-                                    fullWidth
-                                    onChange={(event) => this.setState({ name: event.target.value })}
-                                />
-                                <TextField
-                                    id="goal-description"
-                                    label="Description"
-                                    multiline
-                                    rows="4"
-                                    value={this.state.description}
-                                    onChange={(event) => this.setState({ description: event.target.value })}
-                                    margin="normal"
-                                    fullWidth
-                                />
-                                <TextField
-                                    id="goal-progress"
-                                    label="Progress"
-                                    value={this.state.progress}
-                                    type="number"
-                                    fullWidth
-                                    onChange={(event) => this.setState({ progress: event.target.value })}
-                                />
-                                <FormControl>
-                                    <InputLabel htmlFor="age-simple">Status</InputLabel>
-                                    <Select
-                                        value={this.state.status}
-                                        onChange={() => this.setState({ status: event.target.status })}
-                                        inputProps={{
-                                            name: 'status',
-                                            id: 'status',
-                                        }}
-                                    >
-                                        <MenuItem value={1}>Active</MenuItem>
-                                        <MenuItem value={2}>Abandoned</MenuItem>
-                                        <MenuItem value={3}>Completed</MenuItem>
-                                    </Select>
-                                </FormControl>
+                                <Typography variant="h6" color="textSecondary" component="p">
+                                    Title
+                                </Typography>
+                                <Typography variant="h5" component="h2" paragraph>
+                                    {this.state.name}
+                                </Typography>
+                                <Typography variant="h6" color="textSecondary" component="p">
+                                    Description
+                                </Typography>
+                                <Typography>
+                                    {this.state.description}
+                                </Typography>
+                                <div style={{ marginTop: 10 }}>
+                                    <Line percent={this.state.progress} strokeWidth="4" strokeColor="#2196F3" />
+                                </div>
                             </CardContent>
-                            <CardActions>
-                                <Button
-                                    variant="contained"
-                                    component="label"
-                                >
-                                    Upload Image
-                                    <input
-                                        ref={(ref) => { this.uploadInput = ref; }}
-                                        type="file"
-                                        name="picture"
-                                        style={{ display: "none" }}
-                                    />
-                                </Button>
-                                <Button size="small" color="primary" onClick={() => this.setState({ editing: false, title: this.state.goal.title, description: this.state.goal.description, progress: this.state.goal.progress })}>
-                                    Cancel
-                                </Button>
-                                <Button size="small" color="primary" onClick={() => this.handleEdit()}>
-                                    Save
-                                </Button>
-                            </CardActions>
                         </Card>
-                        <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ open: true })}>
-                            <DeleteForeverIcon />
+                        <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ editing: true })}>
+                            <EditIcon />
                         </Fab>
                     </Paper>
-                    <Dialog
-                        open={this.state.open}
-                        onClose={() => this.setState({ open: false })}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this goal?"}</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                If you can't accomplish this, please mark this as abandoned. This is meant for mistake goals.
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => this.setState({ open: false })} color="primary" autoFocus>
-                                Nah
-                    </Button>
-                            <Button onClick={() => { this.deleteGoal(); this.setState({ open: false }) }} color="primary">
-                                Let's Do it!
-                    </Button>
-                        </DialogActions>
-                    </Dialog>
-                </div>
-            )
-        } else {
-            return (
-                <Paper style={{ padding: 10 }}>
-                    <Card style={styles.card}>
-                        <CardMedia
-                            component="img"
-                            alt={this.state.name}
-                            style={styles.media}
-                            height="140"
-                            image={"/static/uploads/" + (this.state.name !== "" ? this.state.name : "loading") + ".jpeg"}
-                            title={this.state.name}
-                        />
-                        <CardContent>
-                            <Typography variant="h6" color="textSecondary" component="p">
-                                Title
-                                </Typography>
-                            <Typography variant="h5" component="h2" paragraph>
-                                {this.state.name}
-                            </Typography>
-                            <Typography variant="h6" color="textSecondary" component="p">
-                                Description
-                                </Typography>
-                            <Typography>
-                                {this.state.description}
-                            </Typography>
-                            <div style={{ marginTop: 10 }}>
-                                <Line percent={this.state.progress} strokeWidth="4" strokeColor="#2196F3" />
-                            </div>
-                        </CardContent>
-                    </Card>
-                    <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ editing: true })}>
-                        <EditIcon />
-                    </Fab>
-                </Paper>
+                </DocumentTitle>
             )
         }
     }

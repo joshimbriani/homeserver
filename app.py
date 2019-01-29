@@ -22,7 +22,7 @@ from homeserver.models.coasters.journalEntry import CoasterJournalEntry
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.dirname(os.path.realpath(__file__)) + "/data/homeserver.db"
 
 app.register_blueprint(waittime, url_prefix='/api/v1/waittime')
 app.register_blueprint(screamscape, url_prefix='/api/v1/screamscape')
@@ -35,7 +35,8 @@ migrate = Migrate(app, db)
 
 with app.app_context():
     db.init_app(app)
-    if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
+    if not os.path.isfile(os.path.dirname(os.path.realpath(__file__)) + "/data/homeserver.db"):
+        print("No database found. Creating one")
         create_database(app.config['SQLALCHEMY_DATABASE_URI'], encoding='utf8mb4')
         db.create_all()
         db.session.commit()

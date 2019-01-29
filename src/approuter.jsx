@@ -7,6 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import DocumentTitle from 'react-document-title';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -116,70 +117,72 @@ class Dashboard extends React.Component {
     const { classes } = this.props;
 
     return (
-      <Router>
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar
-            position="absolute"
-            className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
-          >
-            <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerOpen}
-                className={classNames(
-                  classes.menuButton,
-                  this.state.open && classes.menuButtonHidden,
-                )}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                component="h1"
-                variant="h6"
-                color="inherit"
-                noWrap
-                className={classes.title}
-              >
-                Josh's Dashboard
+      <DocumentTitle title="Josh's Dashboard - Home">
+        <Router>
+          <div className={classes.root}>
+            <CssBaseline />
+            <AppBar
+              position="absolute"
+              className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
+            >
+              <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
+                <IconButton
+                  color="inherit"
+                  aria-label="Open drawer"
+                  onClick={this.handleDrawerOpen}
+                  className={classNames(
+                    classes.menuButton,
+                    this.state.open && classes.menuButtonHidden,
+                  )}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  color="inherit"
+                  noWrap
+                  className={classes.title}
+                >
+                  Josh's Dashboard
             </Typography>
-              <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          <Drawer
-            variant="permanent"
-            classes={{
-              paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-            }}
-            open={this.state.open}
-          >
-            <div className={classes.toolbarIcon}>
-              <IconButton onClick={this.handleDrawerClose}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div>
-            <Divider />
-            <List>{mainListItems}</List>
-            <Divider />
-            <List>
-              <Route path="/" exact component={() => CoasterListItems} />
-              <Route path="/themeparks" component={() => CoasterListItems} />
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-            <Route path="/" exact component={() => <h2>Home</h2>} />
-            <Route path="/themeparks/" component={() => <CoasterIndex />} />
-            <Route path="/about/" component={() => <h2>About</h2>} />
-            <Route path="/users/" component={() => <h2>Users</h2>} />
-          </main>
-        </div>
-      </Router>
+                <IconButton color="inherit">
+                  <Badge badgeContent={4} color="secondary">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+              </Toolbar>
+            </AppBar>
+            <Drawer
+              variant="permanent"
+              classes={{
+                paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+              }}
+              open={this.state.open}
+            >
+              <div className={classes.toolbarIcon}>
+                <IconButton onClick={this.handleDrawerClose}>
+                  <ChevronLeftIcon />
+                </IconButton>
+              </div>
+              <Divider />
+              <List>{mainListItems}</List>
+              <Divider />
+              <List>
+                <Route path="/" exact component={() => CoasterListItems} />
+                <Route path="/themeparks" component={() => CoasterListItems} />
+              </List>
+            </Drawer>
+            <main className={classes.content}>
+              <div className={classes.appBarSpacer} />
+              <Route path="/" exact component={() => <h2>Home</h2>} />
+              <Route path="/themeparks/" component={() => <CoasterIndex />} />
+              <Route path="/about/" component={() => <h2>About</h2>} />
+              <Route path="/users/" component={() => <h2>Users</h2>} />
+            </main>
+          </div>
+        </Router>
+      </DocumentTitle>
     );
   }
 }

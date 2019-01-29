@@ -4,6 +4,7 @@ import { URL } from '../utils/network';
 import { Link, Redirect } from "react-router-dom";
 import Markdown from 'react-remarkable';
 import moment from 'moment';
+import DocumentTitle from 'react-document-title';
 
 const styles = {
     media: {
@@ -50,12 +51,12 @@ class Journals extends React.Component {
                         alt={journal.title}
                         style={styles.media}
                         height="140"
-                        image={"/static/uploads/journalEntry/" + journal.id + ".jpeg"}
+                        image={"/static/uploads/themeparks/journalEntries/" + journal.id + ".jpeg"}
                         title={journal.title}
                     />
                     <CardContent>
                         <Typography variant="h4" paragraph>
-                                {journal.title}
+                            {journal.title}
                         </Typography>
                         <Typography variant="caption" paragraph>
                             {moment(journal.datetime).format('dddd MMMM Do YYYY')}
@@ -81,23 +82,25 @@ class Journals extends React.Component {
             )
         } else {
             return (
-                <Paper style={{ padding: 10 }}>
-                    <Typography variant="h5" component="h2" paragraph>
-                        Park Journal Entries
+                <DocumentTitle title="Josh's Dashboard - Theme Parks - Journals">
+                    <Paper style={{ padding: 10 }}>
+                        <Typography variant="h5" component="h2" paragraph>
+                            Park Journal Entries
                     </Typography>
-                    <Grid container spacing={24}>
-                        {this.state.journals.map((journal, index) => {
-                            return (
-                                <Grid item xs={6}>
-                                    {this.renderCard(journal)}
-                                </Grid>
-                            )
-                        })}
-                        {this.state.journals.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
-                            No Journal Entries
+                        <Grid container spacing={24}>
+                            {this.state.journals.map((journal, index) => {
+                                return (
+                                    <Grid item xs={6}>
+                                        {this.renderCard(journal)}
+                                    </Grid>
+                                )
+                            })}
+                            {this.state.journals.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
+                                No Journal Entries
                         </Typography>}
-                    </Grid>
-                </Paper>
+                        </Grid>
+                    </Paper>
+                </DocumentTitle>
             )
         }
 

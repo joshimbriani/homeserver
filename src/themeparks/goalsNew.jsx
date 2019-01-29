@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from "react-router-dom";
 import { Grid, Paper, Typography, TextField, Button } from '@material-ui/core';
 import { URL } from '../utils/network';
+import DocumentTitle from 'react-document-title';
 
 class GoalsNew extends React.Component {
     constructor(props) {
@@ -46,63 +47,65 @@ class GoalsNew extends React.Component {
             )
         } else {
             return (
-                <Paper style={{ padding: 10 }}>
-                    <Typography variant="h5" component="h2">
-                        Create a New Goal
+                <DocumentTitle title="Josh's Dashboard - Theme Parks - New Goal">
+                    <Paper style={{ padding: 10 }}>
+                        <Typography variant="h5" component="h2">
+                            Create a New Goal
                     </Typography>
-                    <Grid container spacing={24}>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="goal-name"
-                                label="Name"
-                                value={this.state.name}
-                                fullWidth
-                                onChange={(event) => this.setState({ name: event.target.value })}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="goal-progress"
-                                label="Progress"
-                                value={this.state.progress}
-                                type="number"
-                                fullWidth
-                                onChange={(event) => this.setState({ progress: event.target.value })}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="goal-description"
-                                label="Description"
-                                multiline
-                                rows="4"
-                                value={this.state.description}
-                                onChange={(event) => this.setState({ description: event.target.value })}
-                                margin="normal"
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button
-                                variant="contained"
-                                component="label"
-                            >
-                                Upload Image
-                                <input
-                                    ref={(ref) => { this.uploadInput = ref; }}
-                                    type="file"
-                                    name="picture"
-                                    style={{ display: "none" }}
+                        <Grid container spacing={24}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    id="goal-name"
+                                    label="Name"
+                                    value={this.state.name}
+                                    fullWidth
+                                    onChange={(event) => this.setState({ name: event.target.value })}
                                 />
-                            </Button>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button variant="contained" color="primary" onClick={this.handleSubmit}>
-                                Submit
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    id="goal-progress"
+                                    label="Progress"
+                                    value={this.state.progress}
+                                    type="number"
+                                    fullWidth
+                                    onChange={(event) => this.setState({ progress: event.target.value })}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    id="goal-description"
+                                    label="Description"
+                                    multiline
+                                    rows="4"
+                                    value={this.state.description}
+                                    onChange={(event) => this.setState({ description: event.target.value })}
+                                    margin="normal"
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    variant="contained"
+                                    component="label"
+                                >
+                                    Upload Image
+                                <input
+                                        ref={(ref) => { this.uploadInput = ref; }}
+                                        type="file"
+                                        name="picture"
+                                        style={{ display: "none" }}
+                                    />
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button variant="contained" color="primary" onClick={this.handleSubmit}>
+                                    Submit
                         </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Paper>
+                    </Paper>
+                </DocumentTitle>
             )
         }
     }

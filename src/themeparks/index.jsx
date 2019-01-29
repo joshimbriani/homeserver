@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, withRouter } from "react-router-dom";
+import DocumentTitle from 'react-document-title';
 
 import CoasterHome from './home.jsx';
 import CoasterGoals from './goals.jsx';
@@ -12,6 +13,7 @@ import CoasterJournalsSpec from './journalsSpec.jsx';
 class CoasterIndex extends React.Component {
     render() {
         return (
+            <DocumentTitle title="Josh's Dashboard - Theme Parks - ">
                 <div>
                     <Route exact path={`${this.props.match.url}/`} component={() => <CoasterHome />} />
                     <Route exact path={`${this.props.match.url}/goals`} component={() => <CoasterGoals />} />
@@ -23,6 +25,7 @@ class CoasterIndex extends React.Component {
                     <Route exact path={`${this.props.match.url}/parks/:parkid`} component={() => <CoasterHome />} />
                     <Route path={`${this.props.match.url}/parks/:parkid/:rideid`} component={() => <CoasterHome />} />
                 </div>
+                </DocumentTitle>
         )
     }
 }

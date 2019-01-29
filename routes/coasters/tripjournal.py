@@ -24,7 +24,7 @@ def getAllJournals():
 
         upload = request.files["picture"]
         mimetype = request.files["picture"].content_type
-        destination = "/".join([UPLOAD_FOLDER, "journalEntry", str(journal.id)]) + "." + mimetype[6:]
+        destination = "/".join([UPLOAD_FOLDER, "themeparks/journalEntry", str(journal.id)]) + "." + mimetype[6:]
         upload.save(destination)
 
         return json.dumps({"success": True, "id": journal.id}), 201
@@ -66,7 +66,7 @@ def getSpecJournal(journalid):
         if "picture" in request.files:
             upload = request.files["picture"]
             mimetype = request.files["picture"].content_type
-            destination = "/".join([UPLOAD_FOLDER, "journalEntry", str(journal.id)]) + "." + mimetype[6:]
+            destination = "/".join([UPLOAD_FOLDER, "themeparks/journalEntry", str(journal.id)]) + "." + mimetype[6:]
             upload.save(destination)
 
         db.session.add(journal)

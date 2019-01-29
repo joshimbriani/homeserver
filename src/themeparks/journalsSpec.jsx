@@ -9,7 +9,7 @@ import moment from 'moment';
 import Markdown from 'react-remarkable';
 import AsyncSelect from 'react-select/lib/Async';
 import { DatePicker } from 'material-ui-pickers';
-
+import DocumentTitle from 'react-document-title';
 
 const styles = {
     media: {
@@ -127,7 +127,95 @@ class JournalsSpec extends React.Component {
 
         if (this.state.editing) {
             return (
-                <div>
+                <DocumentTitle title="Josh's Dashboard - Theme Parks - Journal">
+                    <div>
+                        <Paper style={{ padding: 10 }}>
+                            <Card style={styles.card}>
+                                <CardMedia
+                                    component="img"
+                                    alt={this.state.title}
+                                    style={styles.media}
+                                    height="140"
+                                    image={"/static/uploads/themeparks/journalEntry/" + this.state.journal.id + ".jpeg"}
+                                    title={this.state.title}
+                                />
+                                <CardContent>
+                                    <TextField
+                                        id="journal-title"
+                                        label="Name"
+                                        value={this.state.title}
+                                        fullWidth
+                                        onChange={(event) => this.setState({ title: event.target.value })}
+                                    />
+                                    <DatePicker
+                                        value={this.state.datetime}
+                                        onChange={(date) => this.setState({ datetime: date })}
+                                    />
+                                    <TextField
+                                        id="goal-content"
+                                        label="Content"
+                                        multiline
+                                        rows="20"
+                                        value={this.state.content}
+                                        onChange={(event) => this.setState({ content: event.target.value })}
+                                        margin="normal"
+                                        fullWidth
+                                    />
+                                    <AsyncSelect
+                                        cacheOptions
+                                        loadOptions={promiseOptions}
+                                        defaultOptions
+                                        value={this.state.park}
+                                        onChange={(selectedOption) => this.setState({ park: selectedOption })}
+                                    />
+                                </CardContent>
+                                <CardActions>
+                                    <Button
+                                        variant="contained"
+                                        component="label"
+                                    >
+                                        Upload Image
+                                    <input
+                                            ref={(ref) => { this.uploadInput = ref; }}
+                                            type="file"
+                                            name="picture"
+                                            style={{ display: "none" }}
+                                        />
+                                    </Button>
+                                    <Button size="small" color="primary" onClick={() => this.cancelEdit()}>
+                                        Cancel
+                                </Button>
+                                    <Button size="small" color="primary" onClick={() => this.handleEdit()}>
+                                        Save
+                                </Button>
+                                </CardActions>
+                            </Card>
+                            <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ open: true })}>
+                                <DeleteForeverIcon />
+                            </Fab>
+                        </Paper>
+                        <Dialog
+                            open={this.state.open}
+                            onClose={() => this.setState({ open: false })}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this journal?"}</DialogTitle>
+                            <DialogActions>
+                                <Button onClick={() => this.setState({ open: false })} color="primary" autoFocus>
+                                    Nah
+                            </Button>
+                                <Button onClick={() => { this.deleteJournal(); this.setState({ open: false }) }} color="primary">
+                                    Let's Do it!
+                            </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </div>
+                </DocumentTitle>
+            )
+        } else {
+            return (
+                <DocumentTitle title="Josh's Dashboard - Theme Parks - Journal">
                     <Paper style={{ padding: 10 }}>
                         <Card style={styles.card}>
                             <CardMedia
@@ -135,123 +223,39 @@ class JournalsSpec extends React.Component {
                                 alt={this.state.title}
                                 style={styles.media}
                                 height="140"
-                                image={"/static/uploads/journalEntry/" + this.state.journal.id + ".jpeg"}
+                                image={"/static/uploads/themeparks/journalEntry/" + (this.state.journal.id ? this.state.journal.id : "loading") + ".jpeg"}
                                 title={this.state.title}
                             />
                             <CardContent>
-                                <TextField
-                                    id="journal-title"
-                                    label="Name"
-                                    value={this.state.title}
-                                    fullWidth
-                                    onChange={(event) => this.setState({ title: event.target.value })}
-                                />
-                                <DatePicker
-                                    value={this.state.datetime}
-                                    onChange={(date) => this.setState({ datetime: date })}
-                                />
-                                <TextField
-                                    id="goal-content"
-                                    label="Content"
-                                    multiline
-                                    rows="20"
-                                    value={this.state.content}
-                                    onChange={(event) => this.setState({ content: event.target.value })}
-                                    margin="normal"
-                                    fullWidth
-                                />
-                                <AsyncSelect
-                                    cacheOptions
-                                    loadOptions={promiseOptions}
-                                    defaultOptions
-                                    value={this.state.park}
-                                    onChange={(selectedOption) => this.setState({ park: selectedOption })}
-                                />
+                                <Typography variant="caption">
+                                    Title
+                            </Typography>
+                                <Typography variant="h2" paragraph>
+                                    {this.state.title}
+                                </Typography>
+                                <Typography variant="caption">
+                                    Date
+                            </Typography>
+                                <Typography variant="h6" component="p" paragraph>
+                                    {moment(this.state.datetime).format('dddd MMMM Do YYYY')}
+                                </Typography>
+                                <Typography variant="caption" >
+                                    Park
+                            </Typography>
+                                <Typography variant="h6" component="p" paragraph>
+                                    {this.state.journal.park.name}
+                                </Typography>
+                                <Divider variant="middle" style={{ marginTop: 10, marginBottom: 10 }} />
+                                <Markdown>
+                                    {this.state.content}
+                                </Markdown>
                             </CardContent>
-                            <CardActions>
-                                <Button
-                                    variant="contained"
-                                    component="label"
-                                >
-                                    Upload Image
-                                    <input
-                                        ref={(ref) => { this.uploadInput = ref; }}
-                                        type="file"
-                                        name="picture"
-                                        style={{ display: "none" }}
-                                    />
-                                </Button>
-                                <Button size="small" color="primary" onClick={() => this.cancelEdit()}>
-                                    Cancel
-                                </Button>
-                                <Button size="small" color="primary" onClick={() => this.handleEdit()}>
-                                    Save
-                                </Button>
-                            </CardActions>
                         </Card>
-                        <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ open: true })}>
-                            <DeleteForeverIcon />
+                        <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ editing: true })}>
+                            <EditIcon />
                         </Fab>
                     </Paper>
-                    <Dialog
-                        open={this.state.open}
-                        onClose={() => this.setState({ open: false })}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this journal?"}</DialogTitle>
-                        <DialogActions>
-                            <Button onClick={() => this.setState({ open: false })} color="primary" autoFocus>
-                                Nah
-                            </Button>
-                            <Button onClick={() => { this.deleteJournal(); this.setState({ open: false }) }} color="primary">
-                                Let's Do it!
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-                </div>
-            )
-        } else {
-            return (
-                <Paper style={{ padding: 10 }}>
-                    <Card style={styles.card}>
-                        <CardMedia
-                            component="img"
-                            alt={this.state.title}
-                            style={styles.media}
-                            height="140"
-                            image={"/static/uploads/journalEntry/" + (this.state.journal.id ? this.state.journal.id : "loading") + ".jpeg"}
-                            title={this.state.title}
-                        />
-                        <CardContent>
-                            <Typography variant="caption">
-                                Title
-                            </Typography>
-                            <Typography variant="h2" paragraph>
-                                {this.state.title}
-                            </Typography>
-                            <Typography variant="caption">
-                                Date
-                            </Typography>
-                            <Typography variant="h6" component="p" paragraph>
-                                {moment(this.state.datetime).format('dddd MMMM Do YYYY')}
-                            </Typography>
-                            <Typography variant="caption" >
-                                Park
-                            </Typography>
-                            <Typography variant="h6" component="p" paragraph>
-                                {this.state.journal.park.name}
-                            </Typography>
-                            <Divider variant="middle" style={{ marginTop: 10, marginBottom: 10 }} />
-                            <Markdown>
-                                {this.state.content}
-                            </Markdown>
-                        </CardContent>
-                    </Card>
-                    <Fab style={{ position: 'absolute', bottom: 20, right: 20 }} onClick={() => this.setState({ editing: true })}>
-                        <EditIcon />
-                    </Fab>
-                </Paper>
+                </DocumentTitle>
             )
         }
     }
