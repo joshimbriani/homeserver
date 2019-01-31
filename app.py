@@ -24,7 +24,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.dirname(os.path.realpath(__file__)) + "/data/homeserver.db"
 
-app.register_blueprint(waittime, url_prefix='/api/v1/waittime')
+app.register_blueprint(waittime, url_prefix='/api/v1/coasters/waittime')
 app.register_blueprint(screamscape, url_prefix='/api/v1/screamscape')
 app.register_blueprint(coastergoals, url_prefix='/api/v1/coastergoals')
 app.register_blueprint(articles, url_prefix='/api/v1/coasters/articles')

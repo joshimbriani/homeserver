@@ -12,40 +12,37 @@ class ParkCard extends React.Component {
         super(props);
 
         this.state = {
-            park: [],
-            loading: false
+            park: {},
+            loadingPark: false,
+            loadingWaitTimes: false,
+            waitTimes: []
         }
     }
 
     componentDidMount() {
-        this.setState({ loading: true })
-        fetch(URL + "api/v1/screamscape")
+        this.setState({ loadingPark: true, loadingWaitTimes: true })
+        fetch(URL + "api/v1/coasters/parks/?one=true&abbrev=" + this.props.park)
             .then(response => response.json())
-            .then(responseJSON => this.setState({ articles: responseJSON, loading: false }))
+            .then(responseJSON => this.setState({ park: responseJSON, loadingPark: false }));
+        fetch(URL + "api/v1/coasters/waittime/abbrev=" + this.props.park)
+            .then(response => response.json())
+            .then(responseJSON => this.setState({ waitTimes: responseJSON, loadingWaitTimes: false }));
     }
 
     render() {
         return (
-            <Paper style={{ padding: 10 }}>
-                <Typography
-                    component="h2"
-                    variant="h5"
-                    color="inherit"
-                    align="center"
-                    noWrap
-                >
-                    Screamscape Headlines
-                </Typography>
+            <Paper style={[{ padding: 10 }, this.props.style]}>
                 {this.state.loading && <p>
                     Loading
                 </p>}
-                {this.state.articles.map((article, index) => {
-                    return (
-                        <ListItemLink href={article[1]} target="_blank">
-                            <ListItemText primary={article[0]} />
-                        </ListItemLink>
-                    )
-                })}
+                {Object.keys(this.state.park).length > 0 && <div>
+                    <Typography variant="h5" gutterBottom>
+                        {this.state.park.name}
+                    </Typography>
+                    <Typography variant="overline" gutterBottom>
+                        Busier Than Normal
+                    </Typography>
+                </div>}
             </Paper>
         )
     }
