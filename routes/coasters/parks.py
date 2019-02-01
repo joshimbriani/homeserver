@@ -41,11 +41,8 @@ def getAllParks():
         except ValueError:
             return json.dumps({'error': "Can't convert id to int."}), 500
         if nameContains:
-            #parks.filter(CoasterPark.name.startswith(nameContains))
             queries.append(CoasterPark.name.startswith(nameContains))
         if abbrev:
-            print(abbrev)
-            #parks.filter(CoasterPark.abbrev == abbrev)
             queries.append(CoasterPark.abbrev == abbrev)
         
         result = db.session.query(CoasterPark).filter(*queries)

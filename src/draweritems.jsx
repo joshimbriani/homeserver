@@ -11,7 +11,7 @@ import CodeIcon from '@material-ui/icons/Code';
 import TrainIcon from '@material-ui/icons/Train';
 import WebIcon from '@material-ui/icons/Web';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import CalendarIcon from '@material-ui/icons/CalendarToday';
+import AlarmIcon from '@material-ui/icons/Alarm';
 import { Link } from "react-router-dom";
 
 export const mainListItems = (
@@ -63,6 +63,12 @@ export const mainListItems = (
         <CodeIcon />
       </ListItemIcon>
       <ListItemText primary="Code" />
+    </ListItem>
+    <ListItem component={Link} to="/jobs" button>
+      <ListItemIcon>
+        <AlarmIcon />
+      </ListItemIcon>
+      <ListItemText primary="Jobs" />
     </ListItem>
   </div>
 );

@@ -18,8 +18,10 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems } from './draweritems.jsx';
 import { CoasterListItems } from './themeparks/components/listItems.jsx'
+import { JobsListItems } from './jobs/components/listItems.jsx';
 
 import CoasterIndex from './themeparks/index.jsx';
+import JobsIndex from './jobs/index.jsx';
 
 const drawerWidth = 240;
 
@@ -171,12 +173,14 @@ class Dashboard extends React.Component {
               <List>
                 <Route path="/" exact component={() => CoasterListItems} />
                 <Route path="/themeparks" component={() => CoasterListItems} />
+                <Route path="/jobs" component={() => JobsListItems} />
               </List>
             </Drawer>
             <main className={classes.content}>
               <div className={classes.appBarSpacer} />
               <Route path="/" exact component={() => <h2>Home</h2>} />
               <Route path="/themeparks/" component={() => <CoasterIndex />} />
+              <Route path="/jobs/" component={() => <JobsIndex />} />
               <Route path="/about/" component={() => <h2>About</h2>} />
               <Route path="/users/" component={() => <h2>Users</h2>} />
             </main>

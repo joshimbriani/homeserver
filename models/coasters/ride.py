@@ -5,7 +5,7 @@ class CoasterRide(db.Model):
     __tablename__ = 'coasterrides'
     id = db.Column(db.Integer, primary_key=True)
     park = db.Column(db.Integer, ForeignKey('coasterparks.id'))
-    waitTimes = db.relationship('WaitTime')
+    waitTimes = db.relationship('CoasterWaitTime')
     name = db.Column(db.String(500), unique=False)
     description = db.Column(db.String(1000), unique=False)
     rcdbID = db.Column(db.Integer)

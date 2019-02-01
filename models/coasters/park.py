@@ -10,7 +10,7 @@ class CoasterPark(db.Model):
     rcdbID = db.Column(db.Integer)
     wikipediaLink = db.Column(db.String(500), unique=False)
     rides = db.relationship('CoasterRide')
-    waitTimes = db.relationship('WaitTime')
+    waitTimes = db.relationship('CoasterWaitTime')
     abbrev = db.Column(db.String(10), unique=False)
     status = db.Column(db.Integer)
     address = db.Column(db.String(100), unique=False)
