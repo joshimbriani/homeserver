@@ -85,7 +85,6 @@ class GoalsCard extends React.Component {
                             <ArrowBackIcon onClick={() => {
                                 const max = this.state.goals.length;
                                 this.setState({ showIndex: (this.state.showIndex - 1) < 0 ? (max - 1) : (this.state.showIndex - 1) });
-                                console.log(max, this.state.showIndex)
                             }} />
                         </Grid>
                         <Grid item xs={12} sm={6} style={{ textAlign: 'center' }}>

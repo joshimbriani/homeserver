@@ -29,7 +29,6 @@ class Journals extends React.Component {
         fetch(URL + "api/v1/coasters/journals/")
             .then(response => response.json())
             .then(responseJSON => {
-                console.log()
                 this.setState({ journals: responseJSON.sort((a, b) => (a.datetime > b.datetime) ? 1 : ((b.datetime > a.datetime) ? -1 : 0)), loading: false })
             })
     }

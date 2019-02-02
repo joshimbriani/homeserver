@@ -17,8 +17,8 @@ class Jobs extends React.Component {
         super(props);
 
         this.state = {
-            activeGoals: [],
-            abandonedGoals: [],
+            activeJobs: [],
+            inactiveJobs: [],
             completedGoals: [],
             clicked: -1,
             redirectTo: false
@@ -31,54 +31,37 @@ class Jobs extends React.Component {
             .then(response => response.json())
             .then(responseJSON => {
                 var active = [];
-                var abandoned = [];
-                var completed = [];
+                var inactive = [];
 
                 for (var i = 0; i < responseJSON.length; i++) {
-                    if (responseJSON[i]["status"] === 1) {
+                    if (responseJSON[i]["active"]) {
                         active.push(responseJSON[i]);
-                    } else if (responseJSON[i]["status"] === 2) {
-                        abandoned.push(responseJSON);
                     } else {
-                        completed.push(responseJSON);
+                        inactive.push(responseJSON[i]);
                     }
                 }
 
-                this.setState({ activeGoals: active, abandonedGoals: abandoned, completedGoals: completed, loading: false })
+                this.setState({ activeJobs: active, inactiveJobs: inactive, loading: false })
             })
     }
 
-    renderCard(goal) {
+    renderCard(job) {
         return (
             <Card style={styles.card}>
-                <CardActionArea onClick={() => this.setState({ clicked: goal.id, redirectTo: true })}>
-                    <CardMedia
-                        component="img"
-                        alt={goal.title}
-                        style={styles.media}
-                        height="140"
-                        image={"/static/uploads/themeparks/goals/" + goal.id + ".jpeg"}
-                        title={goal.title}
-                    />
+                <CardActionArea onClick={() => this.setState({ clicked: job.id, redirectTo: true })}>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                            {goal.title}
+                            {job.name}
                         </Typography>
                         <Typography component="p">
-                            {goal.description}
+                            {job.description}
                         </Typography>
-                        <div style={{ marginTop: 10 }}>
-                            <Line percent={goal.progress} strokeWidth="4" strokeColor="#2196F3" />
-                        </div>
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button size="small" color="primary" component={Link} to={"/themeparks/goals/" + goal.id}>
+                    <Button size="small" color="primary" component={Link} to={"/jobs/" + job.id + "?edit=true"}>
                         Edit
-                                    </Button>
-                    <Button size="small" color="primary" component={Link} to={"/themeparks/goals/new/"}>
-                        Add a Goal
-                                    </Button>
+                    </Button>
                 </CardActions>
             </Card>
         )
@@ -87,61 +70,45 @@ class Jobs extends React.Component {
     render() {
         if (this.state.redirectTo) {
             return (
-                <Redirect push to={"/themeparks/goals/" + this.state.clicked} />
+                <Redirect push to={"/jobs/" + this.state.clicked} />
             )
         } else {
             return (
-                <DocumentTitle title="Josh's Dashboard - Theme Parks - Goals">
+                <DocumentTitle title="Josh's Dashboard - Jobs">
                     <Paper style={{ padding: 10 }}>
                         <Typography variant="h5" component="h2">
-                            Goals
-                    </Typography>
+                            Jobs
+                        </Typography>
                         <Divider variant="middle" style={{ marginTop: 10, marginBottom: 10 }} />
                         <Typography variant="h5" component="h3">
                             Active
-                    </Typography>
+                        </Typography>
                         <Grid container spacing={24}>
-                            {this.state.activeGoals.map((goal, index) => {
+                            {this.state.activeJobs.map((job, index) => {
                                 return (
                                     <Grid item xs={6}>
-                                        {this.renderCard(goal)}
+                                        {this.renderCard(job)}
                                     </Grid>
                                 )
                             })}
-                            {this.state.activeGoals.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
-                                No Active Goals
+                            {this.state.activeJobs.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
+                                No Active Jobs
                         </Typography>}
                         </Grid>
                         <Divider variant="middle" style={{ marginTop: 10, marginBottom: 10 }} />
                         <Typography variant="h5" component="h3">
-                            Abandoned
-                    </Typography>
+                            Inactive
+                        </Typography>
                         <Grid container spacing={24}>
-                            {this.state.abandonedGoals.map((goal, index) => {
+                            {this.state.inactiveJobs.map((job, index) => {
                                 return (
                                     <Grid item xs={6}>
-                                        {this.renderCard(goal)}
+                                        {this.renderCard(job)}
                                     </Grid>
                                 )
                             })}
-                            {this.state.abandonedGoals.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
-                                No Abandoned Goals
-                        </Typography>}
-                        </Grid>
-                        <Divider variant="middle" style={{ marginTop: 10, marginBottom: 10 }} />
-                        <Typography variant="h5" component="h3">
-                            Completed
-                    </Typography>
-                        <Grid container spacing={24}>
-                            {this.state.completedGoals.map((goal, index) => {
-                                return (
-                                    <Grid item xs={6}>
-                                        {this.renderCard(goal)}
-                                    </Grid>
-                                )
-                            })}
-                            {this.state.completedGoals.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
-                                No Completed Goals
+                            {this.state.inactiveJobs.length <= 0 && <Typography style={{ margin: 20 }} variant="body1" component="p">
+                                No Inactive Jobs
                         </Typography>}
                         </Grid>
                     </Paper>

@@ -7,7 +7,8 @@ class CronCreator:
     def create(cron, description, pythonFile, cronString):
         topLevelDir = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
         executablePath = os.path.join(topLevelDir, "env", "bin", "python")
-        command = executablePath + " " + pythonFile 
+        pythonFilePath = os.path.join(topLevelDir, "modules", pythonFile)
+        command = executablePath + " " + pythonFilePath 
         job = cron.new(command=command, comment=description)
         job.setall(cronString)
         return job
@@ -20,13 +21,19 @@ class CronCreator:
         myCron = None
         if pythonFile:
             crons = cron.find_command(pythonFile)
-            if len(crons) > 0:
-                myCron = crons[0]
+            li = []
+            for i in crons:
+                li.append(i)
+            if len(li) > 0:
+                myCron = li[0]
 
         elif formatString:
             crons = cron.find_time(formatString)
-            if len(crons) > 0:
-                myCron = crons[0]
+            li = []
+            for i in crons:
+                li.append(i)
+            if len(li) > 0:
+                myCron = li[0]
 
         if myCron:
             return myCron
@@ -38,25 +45,49 @@ class CronCreator:
         if not currentFile and not currentCronString:
             return None
         
-        if pythonFile:
+        myCron = None
+        
+        if currentFile:
+            print("Here")
             crons = cron.find_command(currentFile)
-            if len(crons) > 0:
-                myCron = crons[0]
+            li = []
+            for i in crons:
+                li.append(i)
+            if len(li) > 0:
+                myCron = li[0]
 
-        elif formatString:
+        elif currentCronString:
+            print("Here2")
             crons = cron.find_time(currentCronString)
-            if len(crons) > 0:
-                myCron = crons[0]
+            li = []
+            for i in crons:
+                li.append(i)
+            if len(li) > 0:
+                myCron = li[0]
 
         if myCron:
+            print("Found a cron")
             if pythonFile:
                 topLevelDir = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
                 executablePath = os.path.join(topLevelDir, "env", "bin", "python")
-                command = executablePath + " " + pythonFile 
+                pythonFilePath = os.path.join(topLevelDir, "modules", pythonFile)
+                command = executablePath + " " + pythonFilePath 
                 myCron.set_command(command)
 
             if description:
                 myCron.set_comment(description)
 
             if cronString:
+                print("Cron string ", cronString)
                 myCron.setall(cronString)
+
+            cron.write()
+
+    @staticmethod
+    def delete(cron, pythonFile=None, formatString=None):
+        job = CronCreator.get(cron, pythonFile=pythonFile, formatString=formatString)
+
+        if job:
+            cron.remove(job)
+
+            cron.write()

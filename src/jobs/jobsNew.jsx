@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { Grid, Paper, Typography, TextField, Button } from '@material-ui/core';
 import { URL } from '../utils/network';
 import DocumentTitle from 'react-document-title';
+import Select from 'react-select';
 
 class JobsNew extends React.Component {
     constructor(props) {
@@ -11,7 +12,9 @@ class JobsNew extends React.Component {
         this.state = {
             name: '',
             description: '',
-            progress: 0,
+            cronString: '',
+            pythonFile: '',
+            active: { value: true, label: 'Active' },
             success: false,
             redirectID: null
         }
@@ -20,15 +23,15 @@ class JobsNew extends React.Component {
     }
 
     handleSubmit() {
-        if (this.state.name && this.state.description) {
+        if (this.state.name && this.state.description && this.state.cronString && this.state.pythonFile) {
             const data = new FormData();
-            data.append('picture', this.uploadInput.files[0]);
-            data.append('title', this.state.name);
+            data.append('name', this.state.name);
             data.append("description", this.state.description);
-            data.append('progress', this.state.progress);
-            data.append('status', 1);
+            data.append('cronString', this.state.cronString);
+            data.append('pythonFile', this.state.pythonFile);
+            data.append('active', this.state.active.value);
 
-            fetch(URL + 'api/v1/coastergoals/', {
+            fetch(URL + 'api/v1/jobs/', {
                 method: 'POST',
                 body: data
             }).then(response => response.json())
@@ -43,14 +46,14 @@ class JobsNew extends React.Component {
     render() {
         if (this.state.success) {
             return (
-                <Redirect to={"/themeparks/goals/" + this.state.redirectID} />
+                <Redirect to={"/jobs/" + this.state.redirectID} />
             )
         } else {
             return (
-                <DocumentTitle title="Josh's Dashboard - Theme Parks - New Goal">
+                <DocumentTitle title="Josh's Dashboard - Jobs - New Job">
                     <Paper style={{ padding: 10 }}>
                         <Typography variant="h5" component="h2">
-                            Create a New Goal
+                            Create a New Job
                     </Typography>
                         <Grid container spacing={24}>
                             <Grid item xs={12}>
@@ -64,12 +67,11 @@ class JobsNew extends React.Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    id="goal-progress"
-                                    label="Progress"
-                                    value={this.state.progress}
-                                    type="number"
+                                    id="goal-python-file"
+                                    label="Python File Name"
+                                    value={this.state.pythonFile}
                                     fullWidth
-                                    onChange={(event) => this.setState({ progress: event.target.value })}
+                                    onChange={(event) => this.setState({ pythonFile: event.target.value })}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -85,23 +87,28 @@ class JobsNew extends React.Component {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <Button
-                                    variant="contained"
-                                    component="label"
-                                >
-                                    Upload Image
-                                <input
-                                        ref={(ref) => { this.uploadInput = ref; }}
-                                        type="file"
-                                        name="picture"
-                                        style={{ display: "none" }}
-                                    />
-                                </Button>
+                                <TextField
+                                    id="goal-cron-string"
+                                    label="Cron String"
+                                    value={this.state.cronString}
+                                    fullWidth
+                                    onChange={(event) => this.setState({ cronString: event.target.value })}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Select
+                                    value={this.state.active}
+                                    options={[
+                                        { value: false, label: 'Inactive' },
+                                        { value: true, label: 'Active' }
+                                    ]}
+                                    onChange={(option) => this.setState({ active: option })}
+                                />
                             </Grid>
                             <Grid item xs={12}>
                                 <Button variant="contained" color="primary" onClick={this.handleSubmit}>
                                     Submit
-                        </Button>
+                                </Button>
                             </Grid>
                         </Grid>
                     </Paper>

@@ -38,9 +38,9 @@ class Goals extends React.Component {
                     if (responseJSON[i]["status"] === 1) {
                         active.push(responseJSON[i]);
                     } else if (responseJSON[i]["status"] === 2) {
-                        abandoned.push(responseJSON);
+                        abandoned.push(responseJSON[i]);
                     } else {
-                        completed.push(responseJSON);
+                        completed.push(responseJSON[i]);
                     }
                 }
 
