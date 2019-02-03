@@ -21,6 +21,7 @@ from homeserver.models.coasters.park import CoasterPark
 from homeserver.models.coasters.ride import CoasterRide
 from homeserver.models.coasters.journalEntry import CoasterJournalEntry
 from homeserver.models.coasters.waitTimes import CoasterWaitTime
+from homeserver.models.coasters.coasterTrack import CoasterTrack
 
 from homeserver.models.jobs.job import Job
 

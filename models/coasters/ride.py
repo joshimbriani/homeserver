@@ -13,14 +13,9 @@ class CoasterRide(db.Model):
     wikipediaLink = db.Column(db.String(500), unique=False)
     ridden = db.Column(db.Boolean, default=False)
     coasterOrRide = db.Column(db.Boolean)
-    modelLayout = db.Column(db.String(500), unique=False)
-    configuration = db.Column(db.String(500), unique=False)
-    modelCategory = db.Column(db.String(500), unique=False)
     status = db.Column(db.Integer)
-    make = db.Column(db.String(500), unique=False)
     statusDate = db.Column(db.String(40), unique=False)
     openDate = db.Column(db.String(40), unique=False)
-    coasterType = db.Column(db.String(500), unique=False)
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

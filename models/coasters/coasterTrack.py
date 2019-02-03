@@ -13,6 +13,11 @@ class CoasterTrack(db.Model):
     duration = db.Column(db.String(10), unique=False)
     verticalAngle = db.Column(db.Integer)
     drop = db.Column(db.Integer)
+    modelLayout = db.Column(db.String(500), unique=False)
+    configuration = db.Column(db.String(500), unique=False)
+    modelCategory = db.Column(db.String(500), unique=False)
+    coasterType = db.Column(db.String(500), unique=False)
+    make = db.Column(db.String(500), unique=False)
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
