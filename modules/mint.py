@@ -1,3 +1,8 @@
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
 import mintapi
 from utilities.misc import getCredentials, getBrowserDriver
 
@@ -20,3 +25,6 @@ def run(arguments):
 
     # Get net worth
     print(mint.get_net_worth())
+
+if __name__ == "__main__":
+    run()

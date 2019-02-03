@@ -1,3 +1,8 @@
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
 from utilities.communication import Communication
 from utilities.storage import getFileData, writeToFile
 from utilities.misc import getCredentials
@@ -28,3 +33,6 @@ def run(arguments):
             commCreds["twilioSID"], commCreds["twilioAuth"], commCreds["sendGridToken"])
         comm.sendEmail("Hourly Report from Home Server", emailBody)
         writeToFile({}, "emailer", fileType="json")
+
+if __name__ == "__main__":
+    run()
