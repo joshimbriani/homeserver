@@ -15,4 +15,16 @@ class CoasterWaitTime(db.Model):
     earlyEntry = db.Column(db.Boolean)
 
     def as_dict(self):
-       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        waitTime = {}
+        waitTime["id"] = self.id
+        waitTime["park"] = self.park
+        waitTime["ride"] = self.ride
+        waitTime["waitTime"] = self.waitTime
+        waitTime["weather"] = self.weather
+        waitTime["temp"] = self.temp
+        waitTime["humidity"] = self.humidity
+        waitTime["windspeed"] = self.windspeed
+        waitTime["datetime"] = self.datetime.isoformat()
+        waitTime["earlyEntry"] = self.earlyEntry
+        
+        return waitTime
