@@ -1,8 +1,10 @@
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', '..')))
+
+print(sys.path)
 
 import json
 import re
@@ -11,6 +13,10 @@ import os
 
 import requests
 from bs4 import BeautifulSoup
+from sqlalchemy.sql.expression import func
+
+from homeserver.models.coasters.ride import CoasterRide
+from homeserver.app import db, app
 
 def run():
     def scrapeEntity(i):
@@ -298,7 +304,11 @@ def run():
     # Will want to eventually connect to our DB(?)/JSON file(?) and get the lower bound
     # We'll set it manually for now
     #startpoint = 11200
-    startpoint = None
+    with app.app_context():
+        startpoint = db.session.query(db.func.max(CoasterRide.id)).scalar() + 1
+        print(startpoint)
+        return
+    #startpoint = None
 
     # Get the latest coaster/park from the site - this is the upper limit to our search
     # Temporarily set to 10 for testing
