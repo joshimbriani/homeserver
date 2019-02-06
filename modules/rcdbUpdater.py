@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 from sqlalchemy.sql.expression import func
 
 from homeserver.models.coasters.ride import CoasterRide
+from homeserver.models.coasters.park import CoasterPark
 from homeserver.app import db, app
 
 def run():
@@ -304,20 +305,21 @@ def run():
     # Will want to eventually connect to our DB(?)/JSON file(?) and get the lower bound
     # We'll set it manually for now
     #startpoint = 11200
+    startpoint = None
     with app.app_context():
-        startpoint = db.session.query(db.func.max(CoasterRide.id)).scalar() + 1
+        startpoint = max(db.session.query(db.func.max(CoasterRide.rcdbID)).scalar(), db.session.query(db.func.max(CoasterPark.rcdbID)).scalar()) + 1
         print(startpoint)
         return
     #startpoint = None
 
     # Get the latest coaster/park from the site - this is the upper limit to our search
     # Temporarily set to 10 for testing
-    #endpoint = max(list(map(int, re.findall(r'/(\d+).htm', home.text))))
+    endpoint = max(list(map(int, re.findall(r'/(\d+).htm', home.text))))
     #endpoint = 11300
-    endpoint = None
+    #endpoint = None
 
-    scrapeList = [15233, 14980, 12041, 15500, 16269, 12557, 16282, 16923, 14494, 16803, 15141, 17062, 16040, 15658, 15403, 16305, 15666, 15539, 16181, 15479, 16826, 16187, 16828, 15547, 16700, 15679, 14912, 15680, 16063, 15684, 16838, 16582, 15176, 14539, 15948, 16974, 13903, 16594, 16853, 16471, 16729, 16221, 14429, 15327, 14048, 14946, 16739, 16229, 10213, 15593, 16362, 14955, 16749, 15982, 15087, 16494, 12017, 16508, 13681, 14964, 14065, 15222, 10610, 12412, 15997]
-    #scrapeList = None
+    #scrapeList = [15233, 14980, 12041, 15500, 16269, 12557, 16282, 16923, 14494, 16803, 15141, 17062, 16040, 15658, 15403, 16305, 15666, 15539, 16181, 15479, 16826, 16187, 16828, 15547, 16700, 15679, 14912, 15680, 16063, 15684, 16838, 16582, 15176, 14539, 15948, 16974, 13903, 16594, 16853, 16471, 16729, 16221, 14429, 15327, 14048, 14946, 16739, 16229, 10213, 15593, 16362, 14955, 16749, 15982, 15087, 16494, 12017, 16508, 13681, 14964, 14065, 15222, 10610, 12412, 15997]
+    scrapeList = None
 
     # Since RCDB is really unreliable, we can't assume that it'll stay up
     # So instead of waiting until the full scrape is done to output to a json
