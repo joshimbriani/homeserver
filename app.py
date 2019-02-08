@@ -56,5 +56,11 @@ def shutdown_session(exception=None):
 def hello(u_path):
     return render_template('index.html')
 
+@app.after_request # blueprint can also be app~~
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    return response
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=os.environ.get('PORT', 4004), debug=True)
