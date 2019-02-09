@@ -49,6 +49,7 @@ def run():
         windspeed = weather['wind']['speed']
 
         now = arrow.now()
+        date = datetime.now()
 
         if now <= closeUSF and now >= earlyEntryUSF:
             for ride in usf.rides:
@@ -61,7 +62,7 @@ def run():
                     print("Ride Name: '", ride.name, "'")
                     c = CoasterRide.query.filter_by(name=getParkName(ride.name.replace('®', '')), park=p.id).first()
                     print("Ride Name: '", c.name, "'")
-                    w = CoasterWaitTime(park=p.id, ride=c.id, waitTime=ride.waitTime, datetime=datetime.now(), earlyEntry=earlyEntry, weather=weatherfeature, temp=int(temp), windspeed=int(windspeed), humidity=int(humidity))
+                    w = CoasterWaitTime(park=p.id, ride=c.id, waitTime=ride.waitTime, datetime=date, earlyEntry=earlyEntry, weather=weatherfeature, temp=int(temp), windspeed=int(windspeed), humidity=int(humidity))
                     db.session.add(w)
                 print(ride.name, ' ', ride.waitTime)
 
@@ -73,7 +74,7 @@ def run():
                         earlyEntry = True
                     p = CoasterPark.query.filter_by(abbrev='IOA').first()
                     c = CoasterRide.query.filter_by(name=getParkName(ride.name.replace('®', '')), park=p.id).first()
-                    w = CoasterWaitTime(park=p.id, ride=c.id, waitTime=ride.waitTime, datetime=datetime.now(), earlyEntry=earlyEntry, weather=weatherfeature, temp=int(temp), windspeed=int(windspeed), humidity=int(humidity))
+                    w = CoasterWaitTime(park=p.id, ride=c.id, waitTime=ride.waitTime, datetime=date, earlyEntry=earlyEntry, weather=weatherfeature, temp=int(temp), windspeed=int(windspeed), humidity=int(humidity))
                     db.session.add(w)
                 print(ride.name, ' ', ride.waitTime)
 

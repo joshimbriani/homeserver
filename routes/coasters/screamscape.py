@@ -10,12 +10,9 @@ def getScreamscape():
     r = requests.get('http://www.screamscape.com/')
 
     soup = BeautifulSoup(r.text, 'html.parser')
-    print(soup.find_all('b')[3])
 
     tag = soup.find_all('b')[3].findNextSibling()
     tags = []
-
-    print(tag)
 
     while tag.name != "b":
         if tag.name == "a":

@@ -23,10 +23,12 @@ class ParkCard extends React.Component {
         this.setState({ loadingPark: true, loadingWaitTimes: true })
         fetch(URL + "api/v1/coasters/parks/?one=true&abbrev=" + this.props.park)
             .then(response => response.json())
-            .then(responseJSON => this.setState({ park: responseJSON, loadingPark: false }));
-        fetch(URL + "api/v1/coasters/waittime/abbrev=" + this.props.park)
-            .then(response => response.json())
-            .then(responseJSON => this.setState({ waitTimes: responseJSON, loadingWaitTimes: false }));
+            .then(responseJSON => {
+                this.setState({ park: responseJSON, loadingPark: false });
+                fetch(URL + "api/v1/coasters/waittimes/" + responseJSON["id"])
+                    .then(responsewaittime => responsewaittime.json())
+                    .then(responsewaittimesJSON => this.setState({ waitTimes: responsewaittimesJSON, loadingWaitTimes: false }));
+            });
     }
 
     render() {
