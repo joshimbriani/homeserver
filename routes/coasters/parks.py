@@ -1,6 +1,8 @@
 from flask import Blueprint, request
 from homeserver.models.coasters.journalEntry import CoasterJournalEntry
 from homeserver.models.coasters.park import CoasterPark
+from homeserver.models.coasters.waitTimes import CoasterWaitTime
+
 import json
 import os
 from homeserver.database import db
@@ -89,4 +91,19 @@ def getSpecPark(parkid):
         park = CoasterPark.query.get(parkid)
         if not park:
             return {'error': "No park found with that id"}, 404
-        return json.dumps(park.as_dict())
+        
+        waitTimes = []
+        parkResults = CoasterWaitTime.query.filter_by(park=parkid).order_by("datetime desc").first()
+        if parkResults:
+            date = parkResults.datetime
+            waitTimes = CoasterWaitTime.query.filter_by(park=parkid, datetime=date).all()
+        
+        waitTimesSerial = []
+        for time in waitTimes:
+            waitTimesSerial.append(time.as_dict())
+
+        rides = []
+        for ride in park.rides:
+            rides.append(ride.as_dict())
+        
+        return json.dumps({"park": park.as_dict(), "waitTimes": waitTimesSerial, "rides": rides})

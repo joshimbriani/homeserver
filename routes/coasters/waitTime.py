@@ -1,6 +1,7 @@
 
 import json
 from flask import Blueprint, request
+from sqlalchemy.sql.expression import func
 
 #from homeserver.app import db
 from homeserver.models.coasters.waitTimes import CoasterWaitTime
@@ -14,8 +15,12 @@ def getAllWaitTimes():
 @waittime.route('/<int:parkid>', methods=['GET'])
 def getWaitTimePark(parkid):
     if request.method == 'GET':
-        #subquery = db.session.query(db.func.max(CoasterWaitTime.datetime)).group_by().subquery()
-        waitTimes = CoasterWaitTime.query.filter_by(park=parkid).order_by("datetime desc").distinct(CoasterWaitTime.ride).all()
+
+        waitTimes = []
+        parkResults = CoasterWaitTime.query.filter_by(park=parkid).order_by("datetime desc").first()
+        if parkResults:
+            date = parkResults.datetime
+            waitTimes = CoasterWaitTime.query.filter_by(park=parkid, datetime=date).all()
         
         waitTimesSerial = []
         for time in waitTimes:
