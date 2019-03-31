@@ -22,10 +22,12 @@ def getAllJournals():
         db.session.add(journal)
         db.session.commit()
 
-        upload = request.files["picture"]
-        mimetype = request.files["picture"].content_type
-        destination = "/".join([UPLOAD_FOLDER, "themeparks/journalEntry", str(journal.id)]) + "." + mimetype[6:]
-        upload.save(destination)
+        if "picture" in request.files:
+            upload = request.files["picture"]
+            mimetype = request.files["picture"].content_type
+            destination = "/".join([UPLOAD_FOLDER, "themeparks/journalEntry", str(journal.id)]) + "." + mimetype[6:]
+            print(destination)
+            upload.save(destination)
 
         return json.dumps({"success": True, "id": journal.id}), 201
     else:

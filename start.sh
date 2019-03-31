@@ -1,3 +1,3 @@
 source env/bin/activate
 
-(cd src; npm start) & FLASK_RUN_PORT=4004 flask run &
+(cd src; npm start) & python -m flask run --port 4004  &

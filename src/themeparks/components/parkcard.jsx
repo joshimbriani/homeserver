@@ -32,7 +32,7 @@ class ParkCard extends React.Component {
                         console.log(responsewaittimesJSON)
                         var rideChoices = [];
                         for (var i = 0; i < 4; i++) {
-                            rideChoices.push(Math.floor(Math.random() * Math.floor(max)))
+                            rideChoices.push(getRideByIndex(responsewaittimesJSON.rides, Math.floor(Math.random() * responsewaittimesJSON.rides.length)))
                         }
                         this.setState({ waitTimes: responsewaittimesJSON, loadingWaitTimes: false, rideChoices: rideChoices })
                     });
@@ -44,6 +44,7 @@ class ParkCard extends React.Component {
     }
 
     render() {
+        console.log(this.state.rideChoices)
         return (
             <Paper style={[{ padding: 10 }, this.props.style]}>
                 {this.state.loading && <p>
@@ -61,31 +62,32 @@ class ParkCard extends React.Component {
                         Wait Times
                     </Typography>
                     <Grid container spacing={24}>
-                        <Grid item xs={3}>
-                            <Paper className={{ padding: 10 }}>
-                            
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Paper className={{ padding: 10 }}>
-                            
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Paper className={{ padding: 10 }}>
-                            
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Paper className={{ padding: 10 }}>
-                            
-                            </Paper>
-                        </Grid>
+                        {this.state.rideChoices.map(ride => {
+                            return (
+                                <Grid item xs={3}>
+                                    <Paper className={{ padding: 10 }}>
+                                        <Typography variant="overline">
+                                            {ride.name}
+                                        </Typography>
+                                    </Paper>
+                                </Grid>
+                            )
+                        })}
                     </Grid>
                 </div>}
             </Paper>
         )
     }
+}
+
+function getRideByIndex(rides, index) {
+    for (var i = 0; i < rides.length; i++) {
+        if (i === index) {
+            return rides[i];
+        }
+    }
+
+    return -1;
 }
 
 ParkCard.propTypes = {

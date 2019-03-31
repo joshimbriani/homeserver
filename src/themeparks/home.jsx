@@ -20,7 +20,7 @@ class CoasterHome extends React.Component {
                 </Grid>
                 <Grid item xs={8}>
                     <ParkCard park={"IOA"} />
-                    <ParkCard park={"USF"} style={{ marginTop: 20 }} />
+                    <ParkCard park={"USF"} style={{ marginTop: 20, paddingTop: 20 }} />
                     <ParkCard park={"USJ"} style={{ marginTop: 20 }} />
                     <ParkCard park={"USH"} style={{ marginTop: 20 }} />
                     <ParkCard park={"CP"} style={{ marginTop: 20 }} />
