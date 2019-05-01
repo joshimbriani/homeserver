@@ -6,6 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import click
 from utilities.communication import Communication
 from utilities.misc import getCredentials
+from errors.network_error import NetworkError
 
 def run(argDict):
     if "name" not in argDict:

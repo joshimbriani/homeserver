@@ -33,10 +33,10 @@ def run_tasks():
             # And run it
             try:
                 module.run({"name": "josh"})
-            except NetworkError:
+            except Exception as e:
                 commCreds = getCredentials("system")
                 comm = Communication(commCreds["twilioSID"], commCreds["twilioAuth"], commCreds["sendGridToken"])
-                comm.sendEmail("Failing module", "The module %s is failing with a network error. Please fix it when you can!" % job.name)
+                comm.sendEmail("Failing module", "The module %s is failing with error %s. Please fix it when you can!" % (job.name, e))
 
 if __name__ == "__main__":
     with app.app_context():
