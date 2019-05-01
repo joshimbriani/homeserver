@@ -48,7 +48,6 @@ class CronCreator:
         myCron = None
         
         if currentFile:
-            print("Here")
             crons = cron.find_command(currentFile)
             li = []
             for i in crons:
@@ -57,7 +56,6 @@ class CronCreator:
                 myCron = li[0]
 
         elif currentCronString:
-            print("Here2")
             crons = cron.find_time(currentCronString)
             li = []
             for i in crons:
@@ -66,7 +64,6 @@ class CronCreator:
                 myCron = li[0]
 
         if myCron:
-            print("Found a cron")
             if pythonFile:
                 topLevelDir = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
                 executablePath = os.path.join(topLevelDir, "env", "bin", "python")

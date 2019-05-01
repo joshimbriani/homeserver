@@ -5,6 +5,9 @@ import importlib
 
 import click
 
+from crontab import CronTab
+from homeserver.models.jobs.job import Job
+from homeserver.database import db
 
 def runner():
     if len(sys.argv) != 3:

@@ -23,7 +23,10 @@ from homeserver.models.coasters.journalEntry import CoasterJournalEntry
 from homeserver.models.coasters.waitTimes import CoasterWaitTime
 from homeserver.models.coasters.coasterTrack import CoasterTrack
 
+from runner import run_tasks
+
 from homeserver.models.jobs.job import Job
+from crontab import CronTab
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -62,5 +65,14 @@ def after_request(response):
     header['Access-Control-Allow-Origin'] = '*'
     return response
 
+def set_task_runner():
+    cron = CronTab(user=True)
+    runner = cron.find_command('task_runner')
+    if not runner:
+        runner = CronCreator.create(cron, "The top level Cron task runner", "task_runner", "*/1 * * * *")
+    runner.enable(True)
+    cron.write()
+
 if __name__ == "__main__":
+    set_task_runner()
     app.run(host='0.0.0.0', port=os.environ.get('PORT', 4004), debug=True)
