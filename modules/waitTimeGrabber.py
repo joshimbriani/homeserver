@@ -23,7 +23,7 @@ def getParkName(name):
     else:
         return name
 
-def run():
+def run(argDict):
     with app.app_context():
         usf = pyarks.getPark('USF')
         ioa = pyarks.getPark('IOA')

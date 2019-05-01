@@ -23,8 +23,6 @@ from homeserver.models.coasters.journalEntry import CoasterJournalEntry
 from homeserver.models.coasters.waitTimes import CoasterWaitTime
 from homeserver.models.coasters.coasterTrack import CoasterTrack
 
-from runner import run_tasks
-
 from homeserver.models.jobs.job import Job
 from crontab import CronTab
 
