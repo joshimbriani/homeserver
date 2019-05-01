@@ -9,6 +9,7 @@ class Job(db.Model):
     cronString = db.Column(db.String(50))
     active = db.Column(db.Boolean)
     lastRun = db.Column(db.DateTime)
+    options = db.Column(db.String(1000))
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

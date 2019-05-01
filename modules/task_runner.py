@@ -2,6 +2,7 @@ import importlib
 from datetime import datetime
 import sys
 import os
+import json
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', '..')))
@@ -32,7 +33,7 @@ def run_tasks():
 
             # And run it
             try:
-                module.run({"name": "josh"})
+                module.run(json.loads(job.options))
             except Exception as e:
                 commCreds = getCredentials("system")
                 comm = Communication(commCreds["twilioSID"], commCreds["twilioAuth"], commCreds["sendGridToken"])
