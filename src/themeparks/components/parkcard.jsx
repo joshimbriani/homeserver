@@ -44,9 +44,9 @@ class ParkCard extends React.Component {
     }
 
     render() {
-        console.log(this.state.rideChoices)
+        console.log(this.state)
         return (
-            <Paper style={[{ padding: 10 }, this.props.style]}>
+            <Paper>
                 {this.state.loading && <p>
                     Loading
                 </p>}
