@@ -17,7 +17,7 @@ future==0.17.1
 idna==2.7
 itsdangerous==1.1.0
 jaraco.functools==2.0
-lxml==4.3.0
+lxml==4.6.2
 Mako==1.0.7
 MarkupSafe==1.1.0
 mintapi==1.35
