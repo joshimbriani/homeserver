@@ -51,7 +51,7 @@ SQLAlchemy-Utils==0.33.11
 tempora==1.14
 tldextract==2.2.0
 twilio==6.26.2
-urllib3==1.24.2
+urllib3==1.26.5
 Werkzeug==0.14.1
 xmltodict==0.11.0
 zc.lockfile==1.4
