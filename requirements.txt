@@ -30,7 +30,7 @@ pandas==0.23.4
 pbr==5.1.1
 portend==2.3
 pyarks==0.1.4
-PyJWT==1.7.1
+PyJWT==2.4.0
 PySocks==1.6.8
 python-crontab==2.3.6
 python-dateutil==2.7.5
