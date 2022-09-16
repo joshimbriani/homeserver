@@ -18,7 +18,7 @@ idna==2.7
 itsdangerous==1.1.0
 jaraco.functools==2.0
 lxml==4.3.0
-Mako==1.0.7
+Mako==1.2.2
 MarkupSafe==1.1.0
 mintapi==1.35
 mock==2.0.0
